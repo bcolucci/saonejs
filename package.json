@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "A Stream Workflow Framework",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "require-dir": "^0.3.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-eslint": "^6.1.2",
@@ -18,14 +20,16 @@
     "jslint": "^0.10.1",
     "mocha": "^2.5.3",
     "should": "^10.0.0",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.4",
+    "watch": "^0.19.1"
   },
   "scripts": {
     "lint": "sh bin/lint.sh",
     "flow": "sh bin/flow.sh",
     "test": "sh bin/test.sh",
     "build": "sh bin/build.sh",
-    "package": "sh bin/package.sh"
+    "package": "sh bin/package.sh",
+    "watch": "sh bin/watch.sh"
   },
   "repository": {
     "type": "git",
