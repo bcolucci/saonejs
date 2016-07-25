@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "es2015"
+  ],
+  "plugins": [
+    "syntax-flow",
+    "typecheck",
+    "transform-class-properties",
+    "transform-flow-strip-types"
+  ]
+}

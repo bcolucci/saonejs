@@ -1,0 +1,45 @@
+{
+  "name": "river",
+  "version": "0.1.0",
+  "description": "A Stream Workflow Framework",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-plugin-syntax-flow": "^6.8.0",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "babel-plugin-typecheck": "^3.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "eslint": "^3.1.1",
+    "eslint-plugin-flowtype": "^2.3.1",
+    "flow-bin": "^0.29.0",
+    "jslint": "^0.10.1",
+    "mocha": "^2.5.3",
+    "should": "^10.0.0",
+    "sinon": "^1.17.4"
+  },
+  "scripts": {
+    "lint": "sh bin/lint.sh",
+    "flow": "sh bin/flow.sh",
+    "test": "sh bin/test.sh",
+    "build": "sh bin/build.sh",
+    "package": "sh bin/package.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuha-io/river.git"
+  },
+  "keywords": [
+    "stream",
+    "workflow",
+    "framework"
+  ],
+  "author": "Wuha <contact@wuha.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wuha-io/river/issues"
+  },
+  "homepage": "https://github.com/wuha-io/river#readme"
+}
