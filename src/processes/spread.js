@@ -1,8 +1,7 @@
 
-import { pipe } from '../streams'
-import NodeTransform from '../nodejs/NodeTransform'
+import transformStream from '../streams/transformStream'
 
-export const Spread = (params = { field: string, map }) => {
+export default (params: Object = { field: string, map: Object }) => {
 
   const { field, map } = params
 
@@ -14,7 +13,7 @@ export const Spread = (params = { field: string, map }) => {
 
       const fieldValue = map[streamName]
 
-      streamNameToStreamMap[streamName] = new NodeTransform;
+      streamNameToStreamMap[streamName] = transformStream();
       fieldValueToStreamNameMap[fieldValue] = streamName;
 
       return [ streamNameToStreamMap, fieldValueToStreamNameMap ]

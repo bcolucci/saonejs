@@ -1,7 +1,12 @@
 
-import NodeTransform from './nodejs/NodeTransform'
+import emptyStream from './streams/sources/emptyStream'
+import inMemoryStream from './streams/sources/inMemoryStream'
+import transformStream from './streams/transformStream'
 
-export const pipe = (stream, fn?: Function) => {
-  const transform = new NodeTransform({ fn })
-  return stream.pipe(transform)
+export default {
+  sources: {
+    emptyStream
+    , inMemoryStream
+  }
+  , transformStream
 }
