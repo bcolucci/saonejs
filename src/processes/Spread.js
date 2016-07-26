@@ -1,38 +1,38 @@
 
-import { pipe } from '../streams';
-import NodeTransform from '../nodejs/NodeTransform';
+import { pipe } from '../streams'
+import NodeTransform from '../nodejs/NodeTransform'
 
-const createStream = function() {
-  return new NodeTransform({});
-};
+export const Spread = (params = { field: string, map }) => {
 
-export const Spread = function(params) {
-  let field = params.field;
-  let map = params.map;
+  const { field, map } = params
 
   // streams [ males => Stream ]
   // fields [ male => males ]
 
-  let [ streamNameToStreamMap, fieldValueToStreamNameMap ] = Object.keys(map)
+  const [ streamNameToStreamMap, fieldValueToStreamNameMap ] = Object.keys(map)
     .reduce(([ streamNameToStreamMap, fieldValueToStreamNameMap ], streamName) => {
-      let fieldValue = map[streamName];
-      streamNameToStreamMap[streamName] = createStream();
+
+      const fieldValue = map[streamName]
+
+      streamNameToStreamMap[streamName] = new NodeTransform;
       fieldValueToStreamNameMap[fieldValue] = streamName;
 
-      return [ streamNameToStreamMap, fieldValueToStreamNameMap ];
+      return [ streamNameToStreamMap, fieldValueToStreamNameMap ]
 
-    }, [{}, {}]);
+    }, [ {}, {} ])
 
   return (stream) => {
 
     stream.on('data', (data) => {
-      let fieldValue = data[field];
-      let targetStreamName = fieldValueToStreamNameMap[fieldValue];
-      let targetStream = streamNameToStreamMap[targetStreamName];
 
-      targetStream.push(data);
-    });
+      const fieldValue = data[field]
+      const targetStreamName = fieldValueToStreamNameMap[fieldValue]
+      const targetStream = streamNameToStreamMap[targetStreamName]
 
-    return streamNameToStreamMap;
-  };
-};
+      targetStream.push(data)
+
+    })
+
+    return streamNameToStreamMap
+  }
+}

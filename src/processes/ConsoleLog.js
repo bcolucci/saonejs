@@ -1,11 +1,11 @@
 
-import { pipe } from '../streams';
+import { pipe } from '../streams'
 
-const log = function(data) {
-  console.log(data);
-  return data;
-};
+const log = (data) => {
+  console.log(data)
+  return data
+}
 
-export const ConsoleLog = function(params) {
-  return (stream) => pipe(stream, (data) => log(data));
-};
+export const ConsoleLog = (params) => {
+  return (stream) => pipe(stream, (data) => log(data))
+}

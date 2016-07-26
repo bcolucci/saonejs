@@ -16,13 +16,13 @@ class NodeReadable extends Readable {
 export const getInMemorySource = () => {
 
   const data = [];
-  for (let i = 0; i < 100; i++)
+  for (let i = 0; i < 5000; i++)
     data.push({ sex: Math.random() > .6 ? 'male' : 'female' })
 
-  const readable = new NodeReadable;
-  const transform = new NodeTransform;
+  const readable = new NodeReadable
+  const transform = new NodeTransform
 
-  readable.pipe(transform);
+  readable.pipe(transform)
 
   return {
     stream: transform,
@@ -33,7 +33,7 @@ export const getInMemorySource = () => {
           clearInterval(mx)
         readable.push(item)
       }
-      const mx = setInterval(next, 1000)
+      const mx = setInterval(next, 500)
     }
   }
 }
