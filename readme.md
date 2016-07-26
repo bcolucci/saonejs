@@ -1,20 +1,45 @@
 
 # River.js
 
-Todo:
+```javascript
+import rv from 'river'
 
-- Make readme documentation
-- Create interfaces
-- Create implementations (TDD)
+const { log } = rv.console
 
-## Purpose
+const count = rv.count()
 
-Todo
+const users = rv.jsonSource('./users.json')
 
-## Documentation
+log(users) // print each user as it
+log(rv.map(u => `user ${u.name}`)(users)) // print 'user brice', 'user blabla'...
 
-- [Sources](https://github.com/wuha-io/river/blob/master/docs/sources.md)
-- [Endpoints](https://github.com/wuha-io/river/blob/master/docs/endpoints.md)
-- Process
-  - [Filters](https://github.com/wuha-io/river/blob/master/docs/filters.md)
-- Workflows
+const names = rv.prop('name')
+const getNamesAndLogThem = rv.compose(names, log)
+
+getNamesAndLogThem(users)
+
+// rv.prop('name') <=> attr => x => x[attr]
+rv.compose(rv.prop('name'), log)(users) // print only the names
+
+const spreadByGender = rv.spread(rv.prop('gender'), { map: { males: 'm', females: 'f' }})
+
+// rv.categorize eq. to an unbounded rv.spread
+
+const usersByGender = spreadByGender(users)
+
+const { males, females } = usersByGender  // => males: stream of male users, females: stream of female users
+const streamOfAgeStreams = rv.categorize(rv.prop('age'))(users) // => ages: stream of streams of ages (stream<stream<1 year olds>, stream<2 year olds>, stream<10 year olds>>)
+const streamOfNumberOfPeopleWithAge = rv.each(count)(streamOfAgeStreams) // number of people in each stream in streamOfAgeStreams (i.e. stream<stream<number of 1 year olds>, stream<number of 2 year olds>>)
+const numberOfDifferentAges = count(streamOfAgeStreams) // number of streams in streamOfAgeStreams (i.e. number of different ages)
+
+log(streamOfAgeStreams) // => stream, stream, stream
+rv.each(log)(streamOfAgeStreams) // => 1, 2, 3, 4, .. , 21, 22 ...
+rv.each(rv.compose(rv.map(i => `i=${i}`), log))(streamOfAgeStreams)
+
+rv.compose(rv.prop('name'), rv.map(name => `this is a male: ${name}`), log)(males)
+
+const nbMalesAndNbFemales = count(usersByGender)
+nbMalesAndNbFemales.males // 5
+
+users.listen()
+```
