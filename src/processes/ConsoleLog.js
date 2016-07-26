@@ -1,3 +1,4 @@
+
 import { pipe } from '../streams';
 
 const log = function(data) {

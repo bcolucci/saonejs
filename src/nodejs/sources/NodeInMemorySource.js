@@ -1,33 +1,39 @@
-import { Readable } from 'stream';
-import NodeTransform from '../NodeTransform';
+
+import { Readable } from 'stream'
+import NodeTransform from '../NodeTransform'
 
 class NodeReadable extends Readable {
-  constructor(params) {
-    super(Object.assign({}, params, { objectMode: true }));
+
+  constructor(params = {}) {
+    super(Object.assign({}, params, { objectMode: true }))
   }
 
   _read() {
-
   }
+
 }
 
-export const getInMemorySource = function() {
-  let data = [{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'},{'sex': 'male'}, {'sex': 'female'}, {'sex': 'male'}];
-  let readable = new NodeReadable();
-  let transform = new NodeTransform({});
+export const getInMemorySource = () => {
+
+  const data = [];
+  for (let i = 0; i < 100; i++)
+    data.push({ sex: Math.random() > .6 ? 'male' : 'female' })
+
+  const readable = new NodeReadable;
+  const transform = new NodeTransform;
 
   readable.pipe(transform);
 
   return {
     stream: transform,
     start: () => {
-      setInterval(() => {
-        if(data.length) {
-          readable.push(data.shift());
-        } else {
-          readable.push(null);
-        }
-      }, 1000);
+      const next = () => {
+        const item = data.shift() || null
+        if (item === null)
+          clearInterval(mx)
+        readable.push(item)
+      }
+      const mx = setInterval(next, 1000)
     }
-  };
-};
+  }
+}

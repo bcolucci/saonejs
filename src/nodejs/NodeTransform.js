@@ -1,23 +1,22 @@
-const Transform = require('stream').Transform;
+
+import R from 'ramda'
+import { Transform } from 'stream'
 
 export default class NodeTransform extends Transform {
-  constructor(params) {
-    super(Object.assign({}, params, { objectMode: true }));
 
-    this.fn = params.fn;
+  fn: Function
+
+  constructor(params = {}) {
+    super(Object.assign({}, params, { objectMode: true }))
+    this.fn = params.fn || R.identity
   }
 
-  _write(chunk, encoding, callback) {
-    let value = chunk;
-
-    if(this.fn) {
-      value = this.fn(value);
-    }
-
-    this.emit('data', value);
-    callback();
+  _write(chunk, encoding, cbk) {
+    this.emit('data', this.fn(chunk))
+    cbk()
   }
 
   _read() {
   }
+
 }

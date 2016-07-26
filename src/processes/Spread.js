@@ -1,3 +1,4 @@
+
 import { pipe } from '../streams';
 import NodeTransform from '../nodejs/NodeTransform';
 
@@ -11,7 +12,7 @@ export const Spread = function(params) {
 
   // streams [ males => Stream ]
   // fields [ male => males ]
-  
+
   let [ streamNameToStreamMap, fieldValueToStreamNameMap ] = Object.keys(map)
     .reduce(([ streamNameToStreamMap, fieldValueToStreamNameMap ], streamName) => {
       let fieldValue = map[streamName];
@@ -23,7 +24,7 @@ export const Spread = function(params) {
     }, [{}, {}]);
 
   return (stream) => {
-    
+
     stream.on('data', (data) => {
       let fieldValue = data[field];
       let targetStreamName = fieldValueToStreamNameMap[fieldValue];

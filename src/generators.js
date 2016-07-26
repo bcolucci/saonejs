@@ -24,7 +24,7 @@ const conditioned = (hasNext: Function) => (generator: Function) =>
       }
   })()
 
-const bounded = (boundedAttr) => (maxIterations: number) => (generator: Function) =>
+const bounded = (boundedAttr: string) => (maxIterations: number) => (generator: Function) =>
   conditioned((iterator) => R.lt(iterator[boundedAttr], maxIterations))(generator)
 
 const boundedByIterations = (maxIterations: number) => (generator: Function) => bounded('iterations')(maxIterations)(generator)
