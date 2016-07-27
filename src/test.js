@@ -27,7 +27,7 @@ const { males, females } = spread({
 })(stream)
 
 let youngFemales = filter({ test: f => f.age < 21 })(females)
-youngFemales = map({ transform: f => Object.assign(f, { isVeryYoung: f.age <= 10 }) })(youngFemales)
+youngFemales = map({ transform: f => Object.assign({}, f, { isVeryYoung: f.age <= 10 }) })(youngFemales)
 
 log()(youngFemales)
 
