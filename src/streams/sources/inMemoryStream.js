@@ -2,6 +2,9 @@
 import emptyStream from './emptyStream'
 import transformStream from '../transformStream'
 
+/**
+ * TODO
+ */
 export default (data: Array) => {
 
   const readable = emptyStream()
@@ -9,7 +12,7 @@ export default (data: Array) => {
 
   readable.pipe(stream)
 
-  const start = () => {
+  const start = (opts = { timeout: Number = 200}) => {
 
     const next = () => {
       const item = data.shift()
@@ -18,8 +21,8 @@ export default (data: Array) => {
       readable.push(item)
     }
 
-    const mx = setInterval(next, 500)
-    
+    const mx = setInterval(next, opts.timeout)
+
   }
 
   return { stream, start }

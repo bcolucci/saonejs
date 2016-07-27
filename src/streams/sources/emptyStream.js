@@ -1,8 +1,12 @@
 
 import { Readable } from 'stream'
 
-export default (params: Object = {}): Readable => {
-  const stream = new Readable(Object.assign({}, params, { objectMode: true }))
+/**
+ * Returns an empty readable stream
+ */
+export default (opts = {}): Readable => {
+  const streamOpts = Object.assign({}, opts, { objectMode: true })
+  const stream = new Readable(streamOpts)
   stream._read = () => {}
   return stream
 }

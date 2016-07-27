@@ -1,33 +1,25 @@
 
-import _ from 'lodash'
-import streams from './streams'
-import processes from './processes'
-
-const inMemoryStream = streams.sources.inMemoryStream
+import { sample, fillFromGenerator } from './utils/arrays'
+import { continus } from './utils/generators'
+import inMemoryStream from './streams/sources/inMemoryStream'
+import log from './processes/log'
+import spread from './processes/spread'
 
 const genders = [ 'male', 'female' ]
-const randomGender = (): string => _.sample(genders)
+const randomGender = (): string => sample(genders)
+const randomUser = () => Object.assign({}, { sex: randomGender() })
 
-const randomUser = (): Object => {
-  return { sex: randomGender() }
-}
-
-const generateUsers = (nbUsers: number): Array => {
-  const accumulator = (users: Array = []): Array => {
-    if (users.length === nbUsers)
-      return users
-    users.push(randomUser())
-    return accumulator(users)
-  }
-  return accumulator()
-}
-
-const users = generateUsers(1000)
+const users = fillFromGenerator({
+  generator: continus(randomUser),
+  nbItems: 1000
+})
 
 const { stream, start } = inMemoryStream(users)
+const { males, females } = spread({
+  field: 'sex',
+  map: { males: 'male', females: 'female' }
+})(stream)
 
-const { males, females } = processes.spread({ field: 'sex',  map: { males: 'male', females: 'female' }})(stream)
-
-processes.log()(females)
+log()(females)
 
 start()

@@ -1,19 +1,19 @@
 
 import R from 'ramda'
 
-const continus = function* (generate: Function): Generator {
+export const continus = function* (generate: Function): Generator {
   while (true)
     yield generate()
 }
 
-const integers = (): Generator => {
+export const integers = (): Generator => {
   let iterations = 0
   return continus(() => iterations++)
 }
 
-const mathRandom = (): Generator => continus(Math.random)
+export const mathRandom = (): Generator => continus(Math.random)
 
-const conditioned = (hasNext: Function): Function =>
+export const conditioned = (hasNext: Function): Function =>
   (generator: Function): Generator =>
     (function* () {
         const iterator = generator()
@@ -25,16 +25,16 @@ const conditioned = (hasNext: Function): Function =>
         }
     })()
 
-const bounded = (boundedAttr: string): Function =>
+export const bounded = (boundedAttr: string): Function =>
   (maxIterations: number): Function =>
   (generator: Function): Generator =>
     conditioned((iterator) => R.lt(iterator[boundedAttr], maxIterations))(generator)
 
-const boundedByIterations = (maxIterations: number): Function =>
+export const boundedByIterations = (maxIterations: number): Function =>
   (generator: Function): Generator =>
     bounded('iterations')(maxIterations)(generator)
 
-const boundedByValue = (maxValue: number): Function =>
+export const boundedByValue = (maxValue: number): Function =>
   (generator: Function): Generator =>
     bounded('value')(maxValue)(generator)
 
@@ -76,14 +76,4 @@ if (!module.parent) {
   while (i--)
     console.log(g.next())
 
-}
-
-export default {
-  continus,
-  integers,
-  mathRandom,
-  conditioned,
-  bounded,
-  boundedByIterations,
-  boundedByValue
 }

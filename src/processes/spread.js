@@ -1,12 +1,13 @@
 
+import { Stream } from 'stream'
 import transformStream from '../streams/transformStream'
 
-export default (params: Object = { field: string, map: Object }) => {
+/**
+ * Spread a stream based on values. Uses a map to route data.
+ */
+export default (opts = { field: string, map }): Function => {
 
-  const { field, map } = params
-
-  // streams [ males => Stream ]
-  // fields [ male => males ]
+  const { field, map } = opts
 
   const [ streamNameToStreamMap, fieldValueToStreamNameMap ] = Object.keys(map)
     .reduce(([ streamNameToStreamMap, fieldValueToStreamNameMap ], streamName) => {
@@ -20,17 +21,19 @@ export default (params: Object = { field: string, map: Object }) => {
 
     }, [ {}, {} ])
 
+  const route = (data) => {
+
+    const fieldValue = data[field]
+    const targetStreamName = fieldValueToStreamNameMap[fieldValue]
+    const targetStream = streamNameToStreamMap[targetStreamName]
+
+    targetStream.push(data)
+
+  }
+
   return (stream) => {
 
-    stream.on('data', (data) => {
-
-      const fieldValue = data[field]
-      const targetStreamName = fieldValueToStreamNameMap[fieldValue]
-      const targetStream = streamNameToStreamMap[targetStreamName]
-
-      targetStream.push(data)
-
-    })
+    stream.on('data', route)
 
     return streamNameToStreamMap
   }

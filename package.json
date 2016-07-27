@@ -4,7 +4,6 @@
   "description": "A Stream Workflow Framework",
   "main": "index.js",
   "dependencies": {
-    "lodash": "^4.14.0",
     "ramda": "^0.21.0"
   },
   "devDependencies": {
