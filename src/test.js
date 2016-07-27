@@ -4,6 +4,7 @@ import { continus } from './utils/generators'
 import inMemoryStream from './streams/sources/inMemoryStream'
 import log from './processes/log'
 import filter from './processes/filter'
+import map from './processes/map'
 import spread from './processes/spread'
 
 const genders = [ 'male', 'female' ]
@@ -16,7 +17,7 @@ const randomUser = () => Object.assign({}, {
 
 const users = fillFromGenerator({
   generator: continus(randomUser),
-  nbItems: 1000
+  nbItems: 5000
 })
 
 const { stream, start } = inMemoryStream(users)
@@ -25,7 +26,8 @@ const { males, females } = spread({
   map: { males: 'male', females: 'female' }
 })(stream)
 
-const youngFemales = filter({ test: m => m.age < 21 })(females)
+let youngFemales = filter({ test: f => f.age < 21 })(females)
+youngFemales = map({ transform: f => Object.assign(f, { isVeryYoung: f.age <= 10 }) })(youngFemales)
 
 log()(youngFemales)
 
