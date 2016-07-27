@@ -4,7 +4,7 @@
 **in active development**
 
 Look at [src/test.js](https://github.com/wuha-io/river/blob/master/src/test.js)
-```json
+```javascript
 import { sample, fillFromGenerator } from './utils/arrays'
 import { continus } from './utils/generators'
 import inMemoryStream from './streams/sources/inMemoryStream'
