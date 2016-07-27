@@ -1,12 +1,4 @@
 
-import { Readable } from 'stream'
+import emptyStream from '../node/sources/emptyStream'
 
-/**
- * Returns an empty readable stream
- */
-export default (opts = {}): Readable => {
-  const streamOpts = Object.assign({}, opts, { objectMode: true })
-  const stream = new Readable(streamOpts)
-  stream._read = () => {}
-  return stream
-}
+export default emptyStream
