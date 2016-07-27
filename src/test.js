@@ -1,4 +1,5 @@
 
+import R from 'ramda'
 import { sample, fillFromGenerator } from './utils/arrays'
 import { continus } from './utils/generators'
 import inMemoryStream from './streams/sources/inMemoryStream'
@@ -26,9 +27,9 @@ const { males, females } = spread({
   map: { males: 'male', females: 'female' }
 })(stream)
 
-let youngFemales = filter({ test: f => f.age < 21 })(females)
-youngFemales = map({ transform: f => Object.assign({}, f, { isVeryYoung: f.age <= 10 }) })(youngFemales)
+const takeOnlyTheYoungs = filter({ test: u => u.age < 21 })
+const sayIfVeryYoung = map({ transform: u => Object.assign({}, u, { isVeryYoung: u.age <= 10 }) })
 
-log()(youngFemales)
+R.compose(log(), sayIfVeryYoung, takeOnlyTheYoungs)(females)
 
 start()
