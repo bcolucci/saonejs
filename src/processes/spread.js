@@ -1,5 +1,5 @@
 
-import transformStream from '../streams/transformStream'
+import stream from '../streams/stream'
 
 /**
  * Spread a stream based on values
@@ -11,7 +11,7 @@ export default (opts = { field: string, map }): Function => {
     .reduce(([ streamNameToStreamMap, fieldValueToStreamNameMap ], streamName) => {
 
       const fieldValue = opts.map[streamName]
-      streamNameToStreamMap[streamName] = transformStream()
+      streamNameToStreamMap[streamName] = stream()
       fieldValueToStreamNameMap[fieldValue] = streamName
 
       return [ streamNameToStreamMap, fieldValueToStreamNameMap ]

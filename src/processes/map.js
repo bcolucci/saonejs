@@ -1,16 +1,10 @@
 
-import transformStream from '../streams/transformStream'
+import { Stream } from 'stream'
+import pipe from '../utils/pipe'
 
 /**
  * Map a stream
  */
-export default (opts = { transform: Function }): Function => {
-
-  //TODO why???
-  const targetStream = transformStream(/*{ transformer: opts.transform }*/)
-
-  return (stream) => {
-    stream.on('data', (data) => targetStream.push(opts.transform(data)))
-    return targetStream
-  }
-}
+export default (opts = { transformer: Function }): Function =>
+  (stream): Stream =>
+    pipe(opts.transformer)(stream)

@@ -1,29 +1,29 @@
 
-import emptyStream from './emptyStream'
-import transformStream from '../transformStream'
+import readable from '../readable'
+import stream from '../stream'
 
 /**
- * TODO
+ * TODO We probably don't need this, we could use a generator
  */
 export default (data: Array) => {
 
-  const readable = emptyStream()
-  const stream = transformStream()
+  const source = readable()
+  const targetStream = stream()
 
-  readable.pipe(stream)
+  source.pipe(targetStream)
 
-  const start = (opts = { timeout: Number = 200}) => {
+  const start = (opts = { timeout: Number = 100}) => {
 
     const next = () => {
       const item = data.shift()
       if (item === null)
         clearInterval(mx)
-      readable.push(item)
+      targetStream.push(item)
     }
 
     const mx = setInterval(next, opts.timeout)
 
   }
 
-  return { stream, start }
+  return { stream: targetStream, start }
 }

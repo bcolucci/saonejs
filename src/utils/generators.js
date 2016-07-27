@@ -1,5 +1,5 @@
 
-import R from 'ramda'
+import { always, lt } from 'ramda'
 
 export const continus = function* (generate: Function): Generator {
   while (true)
@@ -28,7 +28,7 @@ export const conditioned = (hasNext: Function): Function =>
 export const bounded = (boundedAttr: string): Function =>
   (maxIterations: number): Function =>
   (generator: Function): Generator =>
-    conditioned((iterator) => R.lt(iterator[boundedAttr], maxIterations))(generator)
+    conditioned((iterator) => lt(iterator[boundedAttr], maxIterations))(generator)
 
 export const boundedByIterations = (maxIterations: number): Function =>
   (generator: Function): Generator =>
@@ -41,7 +41,7 @@ export const boundedByValue = (maxValue: number): Function =>
 //TODO extract to test dir
 if (!module.parent) {
 
-  let g = continus(R.always(42))
+  let g = continus(always(42))
   let i = 5
   while (i--)
     console.log(g.next())
@@ -56,7 +56,7 @@ if (!module.parent) {
   while (i--)
     console.log(g.next())
 
-  g = conditioned(({ value }) => R.lt(value, 3))(integers)
+  g = conditioned(({ value }) => lt(value, 3))(integers)
   i = 5
   while (i--)
     console.log(g.next())

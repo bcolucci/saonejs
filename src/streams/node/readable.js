@@ -5,8 +5,7 @@ import { Readable } from 'stream'
  * Returns an empty readable stream
  */
 export default (opts = {}): Readable => {
-  const streamOpts = Object.assign({}, opts, { objectMode: true })
-  const stream = new Readable(streamOpts)
+  const stream = new Readable(Object.assign({}, opts, { objectMode: true }))
   stream._read = () => {}
   return stream
 }

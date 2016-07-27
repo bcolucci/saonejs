@@ -1,6 +1,5 @@
 
-import R from 'ramda'
-import { Readable } from 'stream'
+import readable from '../streams/readable'
 import generators from './generators'
 
 export const generatorStream =
@@ -8,7 +7,7 @@ export const generatorStream =
 
     const iterator = generator()
 
-    const stream = new Readable
+    const stream = readable()
     stream._read = () => {}
 
     const nextChunk = () => {
