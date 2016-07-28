@@ -1,5 +1,5 @@
 
-import { partial, tap, pipe } from 'ramda';
+import { partial, tap, pipe } from 'ramda'
 
 export default (...fns) => {
   let taps = fns.map(fn => partial(tap, [ fn ]))

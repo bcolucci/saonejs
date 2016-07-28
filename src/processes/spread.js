@@ -1,5 +1,5 @@
 
-import createStream from '../streams/stream';
+import createStream from '../streams/stream'
 
 export default (opts = { filters }): Function => {
   const keys = Object.keys(opts.map)

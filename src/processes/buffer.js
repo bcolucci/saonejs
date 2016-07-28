@@ -13,7 +13,7 @@ const buffer = (write: Function, opts) => {
   }
   return {
     data: (data) => {
-      buffer = buffer.concat(data);
+      buffer = buffer.concat(data)
       if (equals(buffer.length, opts.size))
         flush()
     }
