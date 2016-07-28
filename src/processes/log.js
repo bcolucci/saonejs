@@ -1,16 +1,10 @@
+import wrap from '../utils/wrap';
+import tappedPipe from '../utils/tappedPipe';
 
-import { Stream } from 'stream'
-import pipe from '../utils/pipe'
+const log = (write, opts) => {
+  return {
+    data: (data) => tappedPipe(console.log, write)(data)
+  };
+};
 
-const log = function () {
-  const args = Array.from(arguments)
-  console.log.apply(null, args)
-  return args.length === 1 ? args[0] : args
-}
-
-/**
- * Logs stream data and returns the stream
- */
-export default (): Function =>
-  (stream): Stream =>
-    pipe(log)(stream)
+export default (opts = {}): Function => wrap(opts, log);

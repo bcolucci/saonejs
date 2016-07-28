@@ -1,20 +1,10 @@
+import wrap from '../utils/wrap';
+import R from 'ramda';
 
-import stream from '../streams/stream'
+const filter = (write, opts) => {
+  return {
+    data: (data) => R.when(opts.test, write)(data)
+  };
+};
 
-/**
- * Filter a stream
- */
-export default (opts = { test: Function }): Function => {
-
-  const targetStream = stream()
-
-  const route = (data) => {
-    if (opts.test(data))
-      targetStream.push(data)
-  }
-
-  return (stream) => {
-    stream.on('data', route)
-    return targetStream
-  }
-}
+export default (opts = { test: Function }): Function => wrap(opts, filter);

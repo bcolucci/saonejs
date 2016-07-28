@@ -1,10 +1,9 @@
+import wrap from '../utils/wrap';
 
-import { Stream } from 'stream'
-import pipe from '../utils/pipe'
+const map = (write, opts) => {
+  return {
+    data: (data) => write(opts.transform(data))
+  };
+};
 
-/**
- * Map a stream
- */
-export default (opts = { transformer: Function }): Function =>
-  (stream): Stream =>
-    pipe(opts.transformer)(stream)
+export default (opts = { transform: Function }): Function => wrap(opts, map);

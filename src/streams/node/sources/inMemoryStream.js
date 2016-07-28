@@ -1,5 +1,3 @@
-
-import readable from '../readable'
 import stream from '../stream'
 
 /**
@@ -7,7 +5,7 @@ import stream from '../stream'
  */
 export default (data: Array) => {
 
-  const source = readable()
+  const source = stream()
   const targetStream = stream()
 
   source.pipe(targetStream)
