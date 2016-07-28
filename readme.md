@@ -5,7 +5,19 @@
 
 ## Purpose
 
-Todo
+River goal is to provide a very simple way to create (work)flows of data (streams).
+River is not another stream library but something to help you to work with streams eyes closed...
+
+# Test it
+
+    git clone https://github.com/wuha-io/river.git \
+      && cd river \
+      && npm install \
+      && npm test
+
+    # run an example
+    sudo npm install -g babel-cli
+    babel-node examples/users.js
 
 ## Examples
 
@@ -22,3 +34,10 @@ Todo
   - [cast](https://github.com/wuha-io/river/blob/master/docs/cast.md)
   - [spread](https://github.com/wuha-io/river/blob/master/docs/spread.md)
   - [compact](https://github.com/wuha-io/river/blob/master/docs/compact.md)
+
+## Todo
+
+  - Implement all the tests
+  - Implement sources (Elasticsearch, File, JSON, SQLite...)
+  - Implement some endpoints
+  - Make a string grammar we can compile to JavaScript with River
