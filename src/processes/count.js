@@ -5,7 +5,7 @@ const count = (write: Function, opts) => {
   let count = 0
   return {
     data: (data) => {
-      count += 1
+      count++
       write(count)
     }
   }

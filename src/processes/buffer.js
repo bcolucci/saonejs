@@ -3,6 +3,7 @@ import { head, drop, equals } from 'ramda'
 import wrap from '../utils/wrap'
 
 const buffer = (write: Function, opts) => {
+  const { chunkSize } = opts
   let buffer = []
   const flush = () => {
     if (!buffer.length)
@@ -14,10 +15,10 @@ const buffer = (write: Function, opts) => {
   return {
     data: (data) => {
       buffer = buffer.concat(data)
-      if (equals(buffer.length, opts.size))
+      if (equals(buffer.length, chunkSize))
         flush()
     }
   }
 }
 
-export default (opts = { size: Number = 10 }): Function => wrap(buffer, opts)
+export default (opts = { chunkSize: Number = 10 }): Function => wrap(buffer, opts)
