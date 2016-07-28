@@ -2,7 +2,7 @@
 import { strictEqual, deepEqual } from 'assert'
 import tappedPipe from '../../src/utils/tappedPipe'
 
-describe('tappedPipe', () => {
+describe('utils/tappedPipe', () => {
 
   it('Tap each functions and pipe them', () => {
     const logged = []

@@ -4,7 +4,7 @@ import { integers, boundedByIterations } from '../../src/utils/generators'
 import { streamGenerator } from '../../src/utils/streams'
 import wrap from '../../src/utils/wrap'
 
-describe('wrap', () => {
+describe('utils/wrap', () => {
 
   it('should wrap a process and redirect the stream events', done => {
 

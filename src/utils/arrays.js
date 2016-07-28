@@ -2,9 +2,10 @@
 export const sample = (arr: Array) => arr[ Math.floor(Math.random() * arr.length) ]
 
 export const fillFromGenerator = (opts = { generator: Function, nbItems: number }): Array => {
-  const iterator = opts.generator()
+  const { generator, nbItems } = opts
+  const iterator = generator()
   const accumulator = (arr: Array = []): Array => {
-    if (arr.length === opts.nbItems)
+    if (arr.length === nbItems)
       return arr
     arr.push(iterator.next().value)
     return accumulator(arr)

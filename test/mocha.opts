@@ -1,4 +1,4 @@
 --recursive
 --ui bdd
---reporter spec
+--reporter list
 --require babel-polyfill
