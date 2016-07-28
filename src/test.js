@@ -12,8 +12,6 @@ import spread from './processes/spread'
 
 const Flow = pipe;
 
-
-
 const genders = [ 'male', 'female' ]
 const randomGender = (): string => sample(genders)
 const randomAge = (): number => Math.floor(Math.random() * 99)
@@ -37,16 +35,12 @@ const females = filter({ test: (user) => user.sex === 'female' })(bufferedUsers)
 // const { males, females } = spread({ filters: { 'males': (user) => user.sex === 'male', 'females': (user) => user.sex === 'female' }})(bufferedUsers);
 const numberOfUsers = count()(bufferedUsers);
 
-
-
-
 const logYoungFemales = Flow(
   filter({ test: u => u.age < 21 }),
   map({ transform: u => Object.assign({}, u, { isVeryYoung: u.age <= 10 }) }),
   log())(females);
 
 log()(males);
-
 
 const logOfNumberOfUsers = log()(numberOfUsers);
 // log()(logOfNumberOfUsers);

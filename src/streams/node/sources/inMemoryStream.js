@@ -1,12 +1,13 @@
-import stream from '../stream'
+
+import createStream from '../stream'
 
 /**
  * TODO We probably don't need this, we could use a generator
  */
 export default (data: Array) => {
 
-  const source = stream()
-  const targetStream = stream()
+  const source = createStream()
+  const targetStream = createStream()
 
   source.pipe(targetStream)
 

@@ -1,9 +1,10 @@
-import wrap from '../utils/wrap';
 
-const map = (write, opts) => {
+import wrap from '../utils/wrap'
+
+const map = (write: Function, opts) => {
   return {
     data: (data) => write(opts.transform(data))
-  };
-};
+  }
+}
 
-export default (opts = { transform: Function }): Function => wrap(opts, map);
+export default (opts = { transform: Function }): Function => wrap(opts, map)

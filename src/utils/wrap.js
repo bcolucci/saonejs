@@ -1,15 +1,13 @@
-import stream from '../streams/stream'
 
-export default (opts, process) => {
-  const targetStream = stream();
+import createStream from '../streams/stream'
 
+export default (opts, process): Function => {
+  const targetStream = createStream()
   return (stream) => {
-    let initializedProcess = process(targetStream.push.bind(targetStream), opts);
-
+    const initializedProcess = process(targetStream.push.bind(targetStream), opts)
     Object.keys(initializedProcess).forEach((eventName) => {
-      stream.on(eventName, initializedProcess[eventName]);
-    });
-
+      stream.on(eventName, initializedProcess[eventName])
+    })
     return targetStream;
   }
-};
+}

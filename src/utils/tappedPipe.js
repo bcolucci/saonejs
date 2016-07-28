@@ -1,6 +1,7 @@
-import R from 'ramda';
+
+import { partial, tap, pipe } from 'ramda';
 
 export default (...fns) => {
-  let taps = fns.map(fn => R.partial(R.tap, [ fn ]));
-  return R.pipe.apply(null, taps);
-};
+  let taps = fns.map(fn => partial(tap, [ fn ]))
+  return pipe.apply(null, taps)
+}

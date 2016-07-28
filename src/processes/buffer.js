@@ -1,23 +1,23 @@
-import wrap from '../utils/wrap';
-import R from 'ramda';
 
-const buffer = (write, opts) => {
-  let buffer = [];
+import { head, drop, equals } from 'ramda'
+import wrap from '../utils/wrap'
 
+const buffer = (write: Function, opts) => {
+  let buffer = []
+  const flush = () => {
+    if (!buffer.length)
+      return
+    write(head(buffer))
+    buffer = drop(1, buffer)
+    flush()
+  }
   return {
     data: (data) => {
       buffer = buffer.concat(data);
-
-      if(buffer.length === opts.size) {
-        while(buffer.length) {
-          write(R.head(buffer));
-          buffer = R.drop(1, buffer);
-        }
-
-        console.log('----');
-      }
+      if (equals(buffer.length, opts.size))
+        flush()
     }
-  };
-};
+  }
+}
 
-export default (opts = { size: 10 }): Function => wrap(opts, buffer);
+export default (opts = { size: Number = 10 }): Function => wrap(opts, buffer)

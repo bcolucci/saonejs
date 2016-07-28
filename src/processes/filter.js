@@ -1,10 +1,11 @@
-import wrap from '../utils/wrap';
-import R from 'ramda';
 
-const filter = (write, opts) => {
+import { when } from 'ramda'
+import wrap from '../utils/wrap'
+
+const filter = (write: Function, opts) => {
   return {
-    data: (data) => R.when(opts.test, write)(data)
-  };
-};
+    data: (data) => when(opts.test, write)(data)
+  }
+}
 
-export default (opts = { test: Function }): Function => wrap(opts, filter);
+export default (opts = { test: Function }): Function => wrap(opts, filter)

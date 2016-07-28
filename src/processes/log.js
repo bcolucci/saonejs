@@ -1,10 +1,11 @@
-import wrap from '../utils/wrap';
-import tappedPipe from '../utils/tappedPipe';
 
-const log = (write, opts) => {
+import wrap from '../utils/wrap'
+import tappedPipe from '../utils/tappedPipe'
+
+const log = (write: Function, opts) => {
   return {
     data: (data) => tappedPipe(console.log, write)(data)
-  };
-};
+  }
+}
 
-export default (opts = {}): Function => wrap(opts, log);
+export default (opts = {}): Function => wrap(opts, log)
