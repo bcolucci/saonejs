@@ -1,6 +1,6 @@
 
 import { Stream } from 'stream'
 
-stream.prototype.hello = function () {
+Stream.prototype.hello = function () {
   console.log('hello')
 }
