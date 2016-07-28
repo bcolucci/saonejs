@@ -1,14 +1,14 @@
 
 import { pipe, reverse } from 'ramda'
-import { sample, fillFromGenerator } from './utils/arrays'
-import { continus } from './utils/generators'
-import inMemoryStream from './streams/sources/inMemoryStream'
-import log from './processes/log'
-import filter from './processes/filter'
-import map from './processes/map'
-import buffer from './processes/buffer'
-import count from './processes/count'
-import spread from './processes/spread'
+import { sample, fillFromGenerator } from './src/utils/arrays'
+import { continus } from './src/utils/generators'
+import inMemoryStream from './src/streams/sources/inMemoryStream'
+import log from './src/processes/log'
+import filter from './src/processes/filter'
+import map from './src/processes/map'
+import buffer from './src/processes/buffer'
+import count from './src/processes/count'
+import spread from './src/processes/spread'
 
 const Flow = pipe;
 

@@ -18,7 +18,7 @@ export const streamGenerator = (generator: Function, opts = {
         return this.emit('end')
       this.emit('data', cursor.value)
     }
-    const ctx = setInterval(flush, 100)
+    const ctx = setInterval(flush, 0)
     this.on('end', () => clearInterval(ctx))
   }
 

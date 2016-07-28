@@ -3,4 +3,4 @@
 
 **in active development**
 
-Look at [src/test.js](https://github.com/wuha-io/river/blob/master/src/test.js)
+Look at [preview.js](https://github.com/wuha-io/river/blob/master/preview.js)
