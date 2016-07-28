@@ -27,3 +27,5 @@ export const streamGenerator = (generator: Function, opts = {
 
   return stream
 }
+
+//TODO util functions on stream for the tests
