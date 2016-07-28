@@ -1,5 +1,5 @@
 
-import { head, last, tail } from 'ramda'
+import { head, last, tail, identity } from 'ramda'
 import wrap from '../utils/wrap'
 
 const compact = (write: Function, opts) => {
@@ -12,7 +12,7 @@ const compact = (write: Function, opts) => {
       const x = head(arr)
       if (!equals(x, last(compacted)))
         compacted.push(x)
-      return next(tail(arr))
+      return next(tail(arr), compacted)
     }
     return next(buffer.splice(0, buffer.length))
   }

@@ -11,7 +11,7 @@ export default (data: Array) => {
 
   source.pipe(targetStream)
 
-  const start = (opts = { timeout: Number = 100}) => {
+  const listen = (opts = { timeout: Number = 100}) => {
 
     const next = () => {
       const item = data.shift()
@@ -24,5 +24,5 @@ export default (data: Array) => {
 
   }
 
-  return { stream: targetStream, start }
+  return { stream: targetStream, listen }
 }
