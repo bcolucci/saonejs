@@ -1,7 +1,7 @@
 
 import createStream from '../streams/stream'
 
-export default (opts, process): Function => {
+export default (process: Function, opts = {}): Function => {
   const targetStream = createStream()
   return (stream) => {
     const initializedProcess = process(targetStream.push.bind(targetStream), opts)

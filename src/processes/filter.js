@@ -8,4 +8,4 @@ const filter = (write: Function, opts) => {
   }
 }
 
-export default (opts = { test: Function }): Function => wrap(opts, filter)
+export default (opts = { test: Function }): Function => wrap(filter, opts)

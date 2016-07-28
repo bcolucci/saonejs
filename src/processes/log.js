@@ -8,4 +8,4 @@ const log = (write: Function, opts) => {
   }
 }
 
-export default (opts = {}): Function => wrap(opts, log)
+export default (opts = {}): Function => wrap(log, opts)

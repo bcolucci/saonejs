@@ -1,46 +1,29 @@
 
-import readable from '../streams/readable'
-import generators from './generators'
+import { Transform } from 'stream'
+import { mathRandom as mathRandomGen } from './generators'
+import createStream from '../streams/stream'
 
-export const generatorStream =
-  (generator: Function, opts = { nextTick: Function = process.nextTick}): Readable => {
+export const streamGenerator = (generator: Function, opts = {
+  autostart: Boolean = true
+  , nextTick: Function = process.nextTick
+}): Transform => {
 
-    const iterator = generator()
+  const stream = createStream()
 
-    const stream = readable()
-    stream._read = () => {}
-
-    const nextChunk = () => {
+  stream.start = function () {
+    let iterator = generator()
+    const flush = () => {
       const cursor = iterator.next()
       if (cursor.done)
-        return stream.emit('end')
-      stream.emit('data', cursor.value)
-      //TODO make it more flexible (i.e. if user want to use setInterval/clearInterval)
-      opts.nextTick(nextChunk)
+        return this.emit('end')
+      this.emit('data', cursor.value)
     }
+    const ctx = setInterval(flush, 100)
+    this.on('end', () => clearInterval(ctx))
+  }
 
-    nextChunk()
+  if (opts.autostart)
+    stream.start()
 
-    return stream
-}
-
-export const mathRandom = () => generatorStream(generators.mathRandom)
-
-if (!module.parent) {
-
-  //mathRandom()
-  //  .on('data', console.log)
-
-  const fiveMathRandom = () => generators.boundedByIterations(5)(generators.mathRandom)
-
-  /*const it = fiveMathRandom()
-  let i = 6
-  while (i--)
-    console.log(it.next())
-  */
-
-  generatorStream(fiveMathRandom)
-    .on('data', console.log)
-    .on('end', () => console.log('end of fiveMathRandom stream'))
-
+  return stream
 }

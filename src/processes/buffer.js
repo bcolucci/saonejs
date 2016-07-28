@@ -20,4 +20,4 @@ const buffer = (write: Function, opts) => {
   }
 }
 
-export default (opts = { size: Number = 10 }): Function => wrap(opts, buffer)
+export default (opts = { size: Number = 10 }): Function => wrap(buffer, opts)

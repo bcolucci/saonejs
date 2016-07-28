@@ -11,4 +11,4 @@ const count = (write: Function, opts) => {
   }
 }
 
-export default (opts = {}): Function => wrap(opts, count)
+export default (opts = {}): Function => wrap(count, opts)

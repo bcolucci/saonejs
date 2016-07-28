@@ -1,4 +1,5 @@
 
+import { strictEqual, deepEqual } from 'assert'
 import tappedPipe from '../../src/utils/tappedPipe'
 
 describe('tappedPipe', () => {
@@ -15,10 +16,10 @@ describe('tappedPipe', () => {
         nbEven += 1
       return 42 // see above
     }
-    tappedPipe(log, countEven)(1).should.equal(1)
-    tappedPipe(log, countEven)(2).should.equal(2)
-    logged.should.deepEqual([ 1, 2 ])
-    nbEven.should.equal(1)
+    strictEqual(tappedPipe(log, countEven)(1), 1)
+    strictEqual(tappedPipe(log, countEven)(2), 2)
+    deepEqual(logged, [ 1, 2 ])
+    strictEqual(nbEven, 1)
   })
 
 })

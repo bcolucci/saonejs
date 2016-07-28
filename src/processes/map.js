@@ -7,4 +7,4 @@ const map = (write: Function, opts) => {
   }
 }
 
-export default (opts = { transform: Function }): Function => wrap(opts, map)
+export default (opts = { transform: Function }): Function => wrap(map, opts)
