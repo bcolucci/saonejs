@@ -2,6 +2,16 @@
   "parser": "babel-eslint",
   "plugins": [ "flowtype" ],
   "rules": {
+    "valid-jsdoc": [
+      1,
+      { "prefer":
+        {
+          "arg": "param",
+          "argument": "param",
+          "return": "returns"
+        }
+      }
+    ],
     "semi": [ 2, "never" ],
     "flowtype/space-after-type-colon": [ 1, "always" ],
     "flowtype/space-before-type-colon": [ 1, "never" ],

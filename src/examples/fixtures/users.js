@@ -1,7 +1,7 @@
 
-import { sample, fillFromGenerator } from '../../src/utils/arrays'
-import { continus } from '../../src/utils/generators'
-import inMemoryStream from '../../src/streams/sources/inMemoryStream'
+import { sample, fillFromGenerator } from '../../utils/arrays'
+import { continus } from '../../utils/generators'
+import inMemoryStream from '../../streams/sources/inMemoryStream'
 
 const genders = [ 'male', 'female' ]
 const randomGender = (): string => sample(genders)
