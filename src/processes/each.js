@@ -1,11 +1,10 @@
-import R from 'ramda';
+
+import { tap } from 'ramda'
 import wrap from '../utils/wrap'
 
 const each = (write: Function, opts: { each: Function }) => {
   return {
-    data: (data) => {
-      write(R.tap(opts.each(data)))
-    }
+    data: (data) => write(tap(opts.each(data)))
   }
 }
 

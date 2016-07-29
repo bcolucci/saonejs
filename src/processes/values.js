@@ -1,11 +1,10 @@
-import R from 'ramda';
-import wrap from '../utils/wrap';
+
+import { values as vals } from 'ramda'
+import wrap from '../utils/wrap'
 
 const values = (write: Function, opts) => {
   return {
-    data: (data) => {
-      write(R.values(data))
-    }
+    data: (data) => write(vals(data))
   }
 }
 

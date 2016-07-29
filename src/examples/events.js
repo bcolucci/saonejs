@@ -28,27 +28,27 @@ import flatten from '../processes/flatten'
 // }
 
 const elasticsearchFlow = () => {
+
   const createElasticsearchSource = require('../streams/sources/elasticsearch').default
   const clientOpts = { host: 'http://nova.wuha.io:9200' }
   const { listen, stream } = createElasticsearchSource(clientOpts, { index: 'wars', type: 'extension_event' })
 
-  // log()(stream);
-  const byUUIDFlow = flow(categorize({ field: 'uuid' }),
+  const byUUIDFlow = flow(
+    categorize({ field: 'uuid' }),
     complement(),
     values(),
-    flatten());
+    flatten()
+  )
 
-  const byUUID = byUUIDFlow(stream);
+  const byUUID = byUUIDFlow(stream)
 
   map({ transform: (uuidStream) => {
-    log({ template: (ev) => `${ev.uuid}` })(uuidStream);
-    log()(count()(uuidStream));
-  } })(byUUID);
-
+    log({ template: (ev) => ev.uuid })(uuidStream)
+    log()(count()(uuidStream))
+  } })(byUUID)
 
   return listen()
 }
 
 //memoryFlow()
 elasticsearchFlow()
-

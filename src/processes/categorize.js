@@ -1,28 +1,33 @@
+
 import createStream from '../streams/stream'
 
 export default (opts = { field }): Function => {
-  const output = createStream();
-  let streams = {};
+
+  const targetStream = createStream()
+
+  let streams = {}
+
+  const route = (data) => {
+
+    const fieldValue = data[opts.field]
+
+    let existingStream = streams[fieldValue]
+    if(!existingStream) {
+      existingStream = createStream()
+      existingStream.category = fieldValue
+
+      streams = Object.assign({}, streams, { [fieldValue]: existingStream })
+
+      targetStream.write(streams)
+    }
+
+    existingStream.write(data)
+  }
 
   return (stream) => {
-    stream.on('data', (data) => {
-      const fieldValue = data[opts.field];
-      let existingStream = streams[fieldValue];
+    
+    stream.on('data', route)
 
-      if(!existingStream) {
-        existingStream = createStream();
-        existingStream.category = fieldValue;
-
-        streams = Object.assign({}, streams, {
-          [fieldValue]: existingStream
-        });
-
-        output.write(streams);
-      }
-
-      existingStream.write(data);
-    })
-
-    return output;
+    return targetStream
   }
 }

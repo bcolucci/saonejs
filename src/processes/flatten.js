@@ -1,11 +1,10 @@
-import R from 'ramda';
+
+import { forEach } from 'ramda'
 import wrap from '../utils/wrap'
 
 const flatten = (write: Function, opts: {}) => {
   return {
-    data: (data) => {
-      R.forEach(write, data)
-    }
+    data: (data) => forEach(write, data)
   }
 }
 

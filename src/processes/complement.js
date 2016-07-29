@@ -1,18 +1,17 @@
-import R from 'ramda';
+
+import { keys, difference, pick, union } from 'ramda'
 import wrap from '../utils/wrap'
 
 const each = (write: Function, opts: {}) => {
 
-  let total = [];
+  let total = []
 
   return {
     data: (data) => {
-      let keys = R.keys(data);
-      let difference = R.difference(keys, total);
-
-      write(R.pick(difference, data));
-
-      total = R.union(total, keys);
+      const keys = keys(data)
+      const diff = difference(keys, total)
+      write(pick(diff, data))
+      total = union(total, keys)
     }
   }
 }
