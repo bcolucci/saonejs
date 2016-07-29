@@ -1,31 +1,19 @@
 
 import flow from '../flow'
-import log from '../processes/log'
-import map from '../processes/map'
-import compact from '../processes/compact'
-import filter from '../processes/filter'
-import buffer from '../processes/buffer'
-import count from '../processes/count'
-import spread from '../processes/spread'
+import * as P from '../processes'
 
-import categorize from '../processes/categorize'
-import values from '../processes/values'
-import each from '../processes/each'
-import complement from '../processes/complement'
-import flatten from '../processes/flatten'
-
-// const memoryFlow = () => {
-//   const { listen, stream } = require('./fixtures/events').default
-//   flow(
-//     compact({
-//       equals: (e1, e2) => e1 === e2 && [ 'searchBegin', 'searchEnd' ].includes(e1),
-//       chunkSize: 10
-//     }),
-//     map({ transform: (e) => e === 'searchEnd' ? 'searchBegin' : e}),
-//     log()
-//   )(stream)
-//   return listen()
-// }
+const memoryFlow = () => {
+  const { listen, stream } = require('./fixtures/events').default
+  flow(
+    P.compact({
+      equals: (e1, e2) => e1 === e2 && [ 'searchBegin', 'searchEnd' ].includes(e1),
+      chunkSize: 10
+    }),
+    P.map({ transform: (e) => e === 'searchEnd' ? 'searchBegin' : e}),
+    P.log()
+  )(stream)
+  return listen()
+}
 
 const elasticsearchFlow = () => {
 
@@ -34,17 +22,17 @@ const elasticsearchFlow = () => {
   const { listen, stream } = createElasticsearchSource(clientOpts, { index: 'wars', type: 'extension_event' })
 
   const byUUIDFlow = flow(
-    categorize({ field: 'uuid' }),
-    complement(),
-    values(),
-    flatten()
+    P.categorize({ field: 'uuid' }),
+    P.complement(),
+    P.values(),
+    P.flatten()
   )
 
   const byUUID = byUUIDFlow(stream)
 
-  map({ transform: (uuidStream) => {
-    log({ template: (ev) => ev.uuid })(uuidStream)
-    log()(count()(uuidStream))
+  P.map({ transform: (uuidStream) => {
+    P.log({ template: (ev) => ev.uuid })(uuidStream)
+    P.log()(count()(uuidStream))
   } })(byUUID)
 
   return listen()

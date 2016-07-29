@@ -1,37 +1,30 @@
 
 import flow from '../flow'
-import log from '../processes/log'
-import filter from '../processes/filter'
-import map from '../processes/map'
-import buffer from '../processes/buffer'
-import count from '../processes/count'
-import cast from '../processes/cast'
+import * as P from '../processes'
 
 import source from './fixtures/users'
 
-const bufferedUsers = buffer({ chunkSize: 10 })(source.stream)
+const bufferedUsers = P.buffer({ chunkSize: 10 })(source.stream)
 
-//log()(bufferedUsers)
+const males = P.filter({ test: (user) => user.sex === 'male' })(bufferedUsers)
+const females = P.filter({ test: (user) => user.sex === 'female' })(bufferedUsers)
 
-const males = filter({ test: (user) => user.sex === 'male' })(bufferedUsers)
-const females = filter({ test: (user) => user.sex === 'female' })(bufferedUsers)
-
-const numberOfUsers = count()(bufferedUsers)
+const numberOfUsers = P.count()(bufferedUsers)
 
 const logYoungFemales = flow(
-  filter({ test: u => u.age < 21 })
-  , map({ transform: u => Object.assign({}, u, { isVeryYoung: u.age <= 10 }) })
-  , log())(females)
+  P.filter({ test: u => u.age < 21 }),
+  P.map({ transform: u => Object.assign({}, u, { isVeryYoung: u.age <= 10 }) }),
+  P.log()
+)(females)
 
-log()(males)
+P.log()(males)
 
-const logOfNumberOfUsers = log()(numberOfUsers)
-
-//log()(logOfNumberOfUsers)
+const logOfNumberOfUsers = P.log()(numberOfUsers)
+//P.log()(logOfNumberOfUsers)
 
 const castedAges = flow(
-  map({ transform: u => u.age }),
-  cast({ type: String })
+  P.map({ transform: u => u.age }),
+  P.cast({ type: String })
 )
 //castedAges(stream).on('data', (age) => console.log(typeof age, age))
 
