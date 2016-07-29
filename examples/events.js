@@ -8,6 +8,11 @@ import filter from '../src/processes/filter'
 import buffer from '../src/processes/buffer'
 import count from '../src/processes/count'
 import spread from '../src/processes/spread'
+import categorize from '../src/processes/categorize'
+import values from '../src/processes/values'
+import each from '../src/processes/each'
+import complement from '../src/processes/complement'
+import flatten from '../src/processes/flatten'
 
 // import source from './fixtures/events'
 
@@ -23,9 +28,19 @@ import spread from '../src/processes/spread'
 
 
 const { listen, stream } = elasticSearch();
-const forGroup = filter({ test: (ev) => ev.group === '5704d54870547bc06a19322c' })(stream);
-// const logged = log()(forGroup);
-const counted = count()(forGroup);
-log()(counted);
+
+// log()(stream);
+const byUUIDFlow = flow(categorize({ field: 'uuid' }),
+  complement(),
+  values(),
+  flatten());
+
+const byUUID = byUUIDFlow(stream);
+map({ transform: (uuidStream) => {
+  log({ template: (ev) => `${ev.uuid}` })(uuidStream);
+  log()(count()(uuidStream));
+} })(byUUID);
+
+
 
 listen()
