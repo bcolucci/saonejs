@@ -1,4 +1,8 @@
 
+/**
+ * @param {Array} arr The input array
+ * @returns {*} A random object from the input array
+ */
 export const sample = (arr: Array) => arr[ Math.floor(Math.random() * arr.length) ]
 
 export const fillFromGenerator = (opts = { generator: Function, nbItems: number }): Array => {
