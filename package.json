@@ -4,7 +4,8 @@
   "description": "A Stream Workflow Framework",
   "main": "index.js",
   "dependencies": {
-    "casting": "0.0.2",
+    "casting": "^0.0.2",
+    "elasticsearch": "^11.0.1",
     "ramda": "^0.21.0"
   },
   "devDependencies": {
@@ -19,7 +20,6 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
-    "blanket": "^1.2.3",
     "documentation": "^4.0.0-beta9",
     "eslint": "^3.1.1",
     "eslint-plugin-flowtype": "^2.3.1",
@@ -34,6 +34,7 @@
     "flow": "sh bin/flow.sh",
     "test": "sh bin/test.sh",
     "build": "sh bin/build.sh",
+    "doc": "sh bin/doc.sh",
     "package": "sh bin/package.sh",
     "watch": "sh bin/watch.sh"
   },

@@ -1,11 +1,11 @@
 
-import flow from '../src/flow'
-import log from '../src/processes/log'
-import filter from '../src/processes/filter'
-import map from '../src/processes/map'
-import buffer from '../src/processes/buffer'
-import count from '../src/processes/count'
-import cast from '../src/processes/cast'
+import flow from '../flow'
+import log from '../processes/log'
+import filter from '../processes/filter'
+import map from '../processes/map'
+import buffer from '../processes/buffer'
+import count from '../processes/count'
+import cast from '../processes/cast'
 
 import source from './fixtures/users'
 

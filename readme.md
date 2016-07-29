@@ -18,13 +18,12 @@ River is not another stream library but something to help you to work with strea
       && npm test
 
     # run an example
-    sudo npm install -g babel-cli
-    babel-node examples/users.js
+    ./bnode examples/users.js
 
 ## Examples
 
-- [examples/users.js](https://github.com/wuha-io/river/blob/master/examples/users.js)
-- [examples/events.js](https://github.com/wuha-io/river/blob/master/examples/events.js)
+- [src/examples/users.js](https://github.com/wuha-io/river/blob/master/src/examples/users.js)
+- [src/examples/events.js](https://github.com/wuha-io/river/blob/master/src/examples/events.js)
 
 ## Todo
 
