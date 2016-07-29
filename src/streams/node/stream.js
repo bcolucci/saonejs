@@ -7,6 +7,7 @@ import { Transform } from 'stream'
  */
 export default (transformer: Function = identity): Transform => {
   const stream = new Transform({ objectMode: true })
+  stream.on('error', console.error.bind(console))
   stream._read = () => {}
   stream._write = (chunk, _, callback) => {
     stream.emit('data', transformer(chunk))

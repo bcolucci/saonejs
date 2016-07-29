@@ -3,26 +3,25 @@ import createStream from '../stream'
 
 /**
  * TODO We probably don't need this, we could use a generator
+ * @param {Array} items The source array from which will came the stream items
  */
-export default (data: Array) => {
+export default (items: Array) => {
 
-  const source = createStream()
-  const targetStream = createStream()
+  const stream = createStream()
 
-  source.pipe(targetStream)
+  const listen = (opts = { timeout: 10 }) => {
 
-  const listen = (opts = { timeout: Number = 100}) => {
-
+    let index = 0
     const next = () => {
-      const item = data.shift()
+      const item = items[index++] || null
       if (item === null)
         clearInterval(mx)
-      targetStream.push(item)
+      stream.push(item)
     }
 
     const mx = setInterval(next, opts.timeout)
 
   }
 
-  return { stream: targetStream, listen }
+  return { stream, listen }
 }
