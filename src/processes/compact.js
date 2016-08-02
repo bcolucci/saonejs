@@ -1,27 +1,19 @@
 
-import wrap from '../utils/wrap'
 import { T, head } from 'ramda'
+import wrap from '../utils/wrap'
 
 const compact = (write: Function, opts) => {
   let last = []
-
   return {
     data: (data) => {
       if(opts.test(data)) {
         last = last.concat(data)
-      } else {
-        if(last.length) {
-          if(last.length === 1) {
-            write(head(last))
-          } else {
-            write(opts.compact(last))  
-          }
-          
-          last = []
-        }
-
-        write(data)
+        return
       }
+      if (!last.length)
+        return write(data)
+      write(last.length === 1 ? head(last) : opts.compact(last))
+      last = []
     }
   }
 }

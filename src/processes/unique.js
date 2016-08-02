@@ -3,16 +3,13 @@ import wrap from '../utils/wrap'
 import { contains, append } from 'ramda'
 
 const unique = (write: Function, opts) => {
-  let seen = [];
-
+  let seen = []
   return {
     data: (data) => {
-      if(contains(data, seen)) {
-        return
+      if(!contains(data, seen)) {
+        seen = append(data, seen)
+        write(data)
       }
-
-      seen = append(data, seen)
-      write(data)
     }
   }
 }
