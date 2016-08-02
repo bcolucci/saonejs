@@ -8,10 +8,10 @@ const each = (write: Function, opts: {}) => {
 
   return {
     data: (data) => {
-      const keys = keys(data)
-      const diff = difference(keys, total)
+      const currentKeys = keys(data)
+      const diff = difference(currentKeys, total)
       write(pick(diff, data))
-      total = union(total, keys)
+      total = union(total, currentKeys)
     }
   }
 }

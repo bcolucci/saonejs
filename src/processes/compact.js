@@ -1,28 +1,29 @@
 
-import { head, last, tail, identity } from 'ramda'
 import wrap from '../utils/wrap'
+import { T, head } from 'ramda'
 
 const compact = (write: Function, opts) => {
-  const { equals, chunkSize } = opts
-  const buffer = []
-  const compactChunk = () => {
-    const next = (arr: Array, compacted: Array = []) => {
-      if (!arr.length)
-        return compacted
-      const x = head(arr)
-      if (!equals(x, last(compacted)))
-        compacted.push(x)
-      return next(tail(arr), compacted)
-    }
-    return next(buffer.splice(0, buffer.length))
-  }
+  let last = []
+
   return {
     data: (data) => {
-      buffer.push(data)
-      if (buffer.length === chunkSize)
-        write(compactChunk())
+      if(opts.test(data)) {
+        last = last.concat(data)
+      } else {
+        if(last.length) {
+          if(last.length === 1) {
+            write(head(last))
+          } else {
+            write(opts.compact(last))  
+          }
+          
+          last = []
+        }
+
+        write(data)
+      }
     }
   }
 }
 
-export default (opts = { equals: Function, chunkSize: Number = 10 }): Function => wrap(compact, opts)
+export default (opts = { test: T, compact: head }): Function => wrap(compact, opts)

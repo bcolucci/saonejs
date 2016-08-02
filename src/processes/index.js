@@ -3,6 +3,7 @@ import buffer from './buffer'
 import cast from './cast'
 import categorize from './categorize'
 import compact from './compact'
+import compactWithChunk from './compactWithChunk'
 import complement from './complement'
 import count from './count'
 import each from './each'
@@ -12,12 +13,15 @@ import log from './log'
 import map from './map'
 import spread from './spread'
 import values from './values'
+import unique from './unique'
+import head from './head'
 
 export {
   buffer,
   cast,
   categorize,
   compact,
+  compactWithChunk,
   complement,
   count,
   each,
@@ -26,5 +30,7 @@ export {
   log,
   map,
   spread,
-  values
+  values,
+  unique,
+  head
 }

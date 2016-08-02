@@ -1,5 +1,5 @@
 
-import { when } from 'ramda'
+import { when, T } from 'ramda'
 import wrap from '../utils/wrap'
 
 const filter = (write: Function, opts) => {
@@ -8,4 +8,4 @@ const filter = (write: Function, opts) => {
   }
 }
 
-export default (opts = { test: Function }): Function => wrap(filter, opts)
+export default (opts = { test: Function = T }): Function => wrap(filter, opts)
