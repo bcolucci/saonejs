@@ -2,14 +2,13 @@
 import { head, tail } from 'ramda'
 import wrap from '../utils/wrap'
 
-const tick = (write: Function, opts: {}) => {
+const tick = (write: Function, opts) => {
+
   let buffer = []
 
   const writeNext = () => {
-    if(!buffer.length) {
+    if (!buffer.length)
       return
-    }
-
     const packet = head(buffer)
     buffer = tail(buffer)
     write(head(buffer))
@@ -18,13 +17,8 @@ const tick = (write: Function, opts: {}) => {
   const interval = setInterval(writeNext, opts.speed)
 
   return {
-    data: (data) => {
-      buffer = buffer.concat(data)
-    },
-
-    end: () => {
-      clearInterval(interval)
-    }
+    data: (data) => buffer = buffer.concat(data),
+    end: () => clearInterval(interval)
   }
 }
 

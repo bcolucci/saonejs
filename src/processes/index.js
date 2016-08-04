@@ -6,6 +6,7 @@ import compact from './compact'
 import compactWithChunk from './compactWithChunk'
 import complement from './complement'
 import count from './count'
+import dropRepeats from './dropRepeats'
 import each from './each'
 import filter from './filter'
 import flatten from './flatten'
@@ -28,6 +29,7 @@ export {
   compactWithChunk,
   complement,
   count,
+  dropRepeats,
   each,
   filter,
   flatten,
