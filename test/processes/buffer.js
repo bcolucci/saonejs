@@ -5,7 +5,7 @@ import createStream from '../../src/streams/stream'
 
 describe('processes/buffer', () => {
 
-    it('bufferize n elements before writing on the stream', (done) => {
+    it('bufferize n elements before writing on the stream', done => {
       const stream = createStream()
       const received = []
       buffer({ chunkSize: 2 })(stream)

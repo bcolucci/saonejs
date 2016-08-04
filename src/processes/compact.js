@@ -3,23 +3,22 @@ import wrap from '../utils/wrap'
 import { F, last } from 'ramda'
 
 const compact = (write: Function, opts) => {
-  let toCompact = []
+
+  let buffer = []
 
   return {
     data: (data) => {
-      if(opts.test(data, last(toCompact))) {
-        toCompact = toCompact.concat(data)
-      } else {
-        if(toCompact.length) {
-          write(toCompact.length === 1 ? last(toCompact) : opts.compact(toCompact))
-          toCompact = []
-        }
-
-        write(data)
+      if (!buffer.length)
+        return buffer = [data]
+      if (opts.test(data, last(buffer)))
+        return buffer = buffer.concat(data)
+      if (buffer.length) {
+        write(opts.compact(buffer))
+        buffer = []
       }
+      write(data)
     }
   }
 }
 
 export default (opts = { test: F, compact: last }): Function => wrap(compact, opts)
-

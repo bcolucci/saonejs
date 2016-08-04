@@ -1,24 +1,21 @@
 
-import { equals } from 'ramda'
+import { equals, last } from 'ramda'
 import { deepEqual } from 'assert'
-import { between } from '../../src/processes'
+import { compact } from '../../src/processes'
 import createStream from '../../src/streams/stream'
 
-describe('processes/between', () => {
+describe('processes/compact', () => {
 
-    it('extract sequences', done => {
+    it('...............................', done => {
       const stream = createStream()
       const received = []
-      between({ test: equals('a') })(stream)
+      compact({ test: equals, compact: last })(stream)
         .on('data', received.push.bind(received))
         .on('end', () => {
-          deepEqual(received, [
-            [ 'a', 'b', 'c' ],
-            [ 'a', 'c' ]
-          ])
+          deepEqual(received, 'abcdefg'.split(''))
           done()
         })
-      'babcacabc'.split('')
+      'aabcdddeffg'.split('')
         .forEach(n => stream.write(n))
       stream.emit('end')
     })
