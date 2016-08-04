@@ -1,7 +1,9 @@
 'use strict'
 
-require('babel-polyfill')
+var processes = require('./src/processes');
+var flow = require('./src/flow').default;
+var sources = {
+  es: require('./src/streams/sources/elasticsearch').default
+};
 
-//TODO
-
-module.exports = {}
+module.exports = Object.assign({}, { P: processes }, { flow }, { sources });

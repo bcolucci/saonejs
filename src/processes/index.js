@@ -15,6 +15,7 @@ import spread from './spread'
 import values from './values'
 import unique from './unique'
 import head from './head'
+import between from './between'
 
 export {
   buffer,
@@ -32,5 +33,6 @@ export {
   spread,
   values,
   unique,
-  head
+  head,
+  between
 }

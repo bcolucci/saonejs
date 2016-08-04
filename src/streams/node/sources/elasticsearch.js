@@ -16,7 +16,7 @@ export default (
   //  .catch(console.error.bind(console))
 
   const search = searchStream(client, stream, streamOpts)
-
+  
   return {
     stream: stream,
     listen: () => search(searchOpts)

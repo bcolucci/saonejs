@@ -9,9 +9,9 @@ export const searchStream = (client, targetStream: Stream, streamOpts = {}): Fun
   const onError = console.error.bind(console)
 
   const handleResponse = (res, countBefore) => {
-
     let total = res.hits.total
     let countAfter = countBefore + res.hits.hits.length
+
 
     res.hits.hits.forEach(hit => targetStream.write(hit._source))
 
