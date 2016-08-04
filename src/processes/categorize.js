@@ -1,6 +1,8 @@
 
 import createStream from '../streams/stream'
 
+//TODO instead of a field, we should have a Function
+// because what if I want to categorize strings?
 export default (opts = { field }): Function => {
 
   const targetStream = createStream()
@@ -12,7 +14,8 @@ export default (opts = { field }): Function => {
     const fieldValue = data[opts.field]
 
     let existingStream = streams[fieldValue]
-    if(!existingStream) {
+    if (!existingStream) {
+
       existingStream = createStream()
       existingStream.category = fieldValue
 
@@ -25,8 +28,12 @@ export default (opts = { field }): Function => {
   }
 
   return (stream) => {
-    
-    stream.on('data', route)
+
+    targetStream.on('end', () => Object.keys(streams).forEach(category => streams[category].emit('end')))
+
+    stream
+      .on('data', route)
+      .on('end', () => targetStream.emit('end'))
 
     return targetStream
   }

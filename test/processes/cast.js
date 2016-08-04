@@ -5,7 +5,7 @@ import createStream from '../../src/streams/stream'
 
 describe('processes/cast', () => {
 
-    it('cast elements from a stream (simple type)', (done) => {
+    it('cast elements from a stream (simple type)', done => {
       const stream = createStream()
       const received = []
       cast({ type: Number })(stream)
@@ -21,7 +21,7 @@ describe('processes/cast', () => {
       stream.emit('end')
     })
 
-    it('cast elements from a stream (custom type)', (done) => {
+    it('cast elements from a stream (custom type)', done => {
 
       class MyCustomType {
         constructor(x) {
@@ -29,7 +29,7 @@ describe('processes/cast', () => {
           this.value = isNaN(n) ? null : n
         }
       }
-      
+
       const stream = createStream()
       const received = []
       cast({ type: 'MyType', definition: MyCustomType })(stream)

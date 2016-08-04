@@ -6,7 +6,7 @@ import createStream from '../../src/streams/stream'
 
 describe('processes/between', () => {
 
-    it('extract sequences', (done) => {
+    it('extract sequences', done => {
       const stream = createStream()
       const values = []
       between({ test: equals('a') })(stream)
@@ -19,7 +19,7 @@ describe('processes/between', () => {
           done()
         })
       const streamValues = [ 'b', 'a', 'b', 'c', 'a', 'c', 'a', 'b' ]
-      streamValues.forEach((n) => stream.write(n))
+      streamValues.forEach(n => stream.write(n))
       stream.emit('end')
     })
 
