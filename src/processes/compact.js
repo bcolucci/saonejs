@@ -11,13 +11,7 @@ const compact = (write: Function, opts) => {
         toCompact = toCompact.concat(data)
       } else {
         if(toCompact.length) {
-          if(toCompact.length === 1) {
-            write(last(toCompact))
-          } else {
-            // console.log('end of compact on data', data, toCompact);
-            write(opts.compact(toCompact))  
-          }
-          
+          write(toCompact.length === 1 ? last(toCompact) : opts.compact(toCompact))
           toCompact = []
         }
 
@@ -28,3 +22,4 @@ const compact = (write: Function, opts) => {
 }
 
 export default (opts = { test: F, compact: last }): Function => wrap(compact, opts)
+
