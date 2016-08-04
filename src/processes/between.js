@@ -2,26 +2,22 @@
 import wrap from '../utils/wrap'
 
 const between = (write: Function, opts) => {
-  let currentPackets = []
+
+  let buffer = []
 
   return {
     data: (data) => {
 
       if(opts.test(data)) {
-        if(currentPackets.length) {
-          write(currentPackets)
-        }
-
-        currentPackets = [data]
-      } else {
-        if(currentPackets.length) {
-          currentPackets = currentPackets.concat(data)  
-        } else {
-          // console.log('started and not between', data.name)
-        }
+        if(buffer.length)
+          write(buffer)
+        return buffer = [data]
       }
+
+      if (buffer.length)
+        buffer = buffer.concat(data)
     }
   }
 }
 
-export default (opts = { test }): Function => wrap(between, opts)
+export default (opts = { test: Function }): Function => wrap(between, opts)
