@@ -11,6 +11,7 @@ import each from './each'
 import filter from './filter'
 import flatten from './flatten'
 import frequency from './frequency'
+import keys from './keys'
 import log from './log'
 import map from './map'
 import round from './round'
@@ -34,6 +35,7 @@ export {
   filter,
   flatten,
   frequency,
+  keys,
   log,
   map,
   round,
