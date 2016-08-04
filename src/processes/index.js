@@ -12,6 +12,7 @@ import flatten from './flatten'
 import frequency from './frequency'
 import log from './log'
 import map from './map'
+import round from './round'
 import spread from './spread'
 import values from './values'
 import unique from './unique'
@@ -32,6 +33,7 @@ export {
   frequency,
   log,
   map,
+  round,
   spread,
   values,
   unique,

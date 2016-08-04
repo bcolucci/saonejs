@@ -7,14 +7,7 @@ const frequency = (write: Function, opts) => {
 
   let total, views, freq
 
-  const roundFactor = !opts.round ? 1 : Math.pow(10, opts.round)
-  const round = x => {
-    if (roundFactor === 1)
-      return x
-    return Math.round(x * roundFactor) / roundFactor
-  }
-
-  const compute = () => round(views / (total || 1))
+  const compute = () => views / (total || 1)
   const reset = () => total = views = 0
 
   reset()
@@ -33,7 +26,7 @@ const frequency = (write: Function, opts) => {
       if (total < TOTAL_TRIGGER)
         return write(curFreq)
 
-      freq = .5 * (freq + curFreq)
+      freq = (freq + curFreq) / 2
       reset()
 
       write(freq)
@@ -41,4 +34,4 @@ const frequency = (write: Function, opts) => {
   }
 }
 
-export default (opts = { test: Function, round: Number }): Function => wrap(frequency, opts)
+export default (opts = { test: Function }): Function => wrap(frequency, opts)
