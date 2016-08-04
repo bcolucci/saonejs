@@ -16,6 +16,7 @@ import values from './values'
 import unique from './unique'
 import head from './head'
 import between from './between'
+import tick from './tick'
 
 export {
   buffer,
@@ -34,5 +35,6 @@ export {
   values,
   unique,
   head,
-  between
+  between,
+  tick
 }

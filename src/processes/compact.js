@@ -4,19 +4,20 @@ import { F, last } from 'ramda'
 
 const compact = (write: Function, opts) => {
 
-  let buffer = []
+  let toCompact = []
 
   return {
     data: (data) => {
-      if (!buffer.length)
-        return buffer = [data]
-      if (opts.test(data, last(buffer)))
-        return buffer = buffer.concat(data)
-      if (buffer.length) {
-        write(opts.compact(buffer))
-        buffer = []
+      if(opts.test(data, last(toCompact), toCompact)) {
+        toCompact = toCompact.concat(data)
+      } else {
+        if(toCompact.length) {
+          write(toCompact.length === 1 ? last(toCompact) : opts.compact(toCompact))
+          toCompact = []
+        }
+
+        write(data)
       }
-      write(data)
     }
   }
 }
