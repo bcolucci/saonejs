@@ -1,24 +1,21 @@
 
 import { equals } from 'ramda'
 import { deepEqual } from 'assert'
-import { between } from '../../src/processes'
+import { frequency } from '../../src/processes'
 import createStream from '../../src/streams/stream'
 
-describe('processes/between', () => {
+describe('processes/frequency', () => {
 
-  it('extract sequences', done => {
+  it('calculate a frequency on a stream', done => {
     const stream = createStream()
     const received = []
-    between({ test: equals('a') })(stream)
+    frequency({ test: equals('a'), round: 1 })(stream)
       .on('data', received.push.bind(received))
       .on('end', () => {
-        deepEqual(received, [
-          [ 'a', 'b', 'c' ],
-          [ 'a', 'c' ]
-        ])
+        deepEqual(received, [ 1, 0.5, 0.3, 0.3, 0.4, 0.5, 0.6, 0.6, 0.7, 0.6, 0.5, 0.5, 0.5, 0.4 ])
         done()
       })
-    'babcacabc'.split('')
+    'abbbaaaaabbbbb'.split('')
       .forEach(n => stream.write(n))
     stream.emit('end')
   })

@@ -9,6 +9,7 @@ import count from './count'
 import each from './each'
 import filter from './filter'
 import flatten from './flatten'
+import frequency from './frequency'
 import log from './log'
 import map from './map'
 import spread from './spread'
@@ -28,6 +29,7 @@ export {
   each,
   filter,
   flatten,
+  frequency,
   log,
   map,
   spread,
