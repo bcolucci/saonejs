@@ -14,6 +14,7 @@ import frequency from './frequency'
 import keys from './keys'
 import log from './log'
 import map from './map'
+import pranalyze from './pranalyze'
 import round from './round'
 import spread from './spread'
 import values from './values'
@@ -38,6 +39,7 @@ export {
   keys,
   log,
   map,
+  pranalyze,
   round,
   spread,
   values,
