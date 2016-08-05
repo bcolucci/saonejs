@@ -8,7 +8,7 @@ describe('processes/tick', () => {
   it('send elements in chunks with a certain speed', done => {
     const stream = createStream()
     const received = []
-    const speed = 5
+    const speed = 100
     tick({ speed })(stream)
       .on('data', received.push.bind(received))
     stream.write(1)
@@ -26,7 +26,7 @@ describe('processes/tick', () => {
           done()
         }, speed * 2)
       }, speed)
-    }, 1)
+    }, 50)
   })
 
 })
