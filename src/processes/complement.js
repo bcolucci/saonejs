@@ -3,15 +3,13 @@ import { keys, difference, pick, union } from 'ramda'
 import wrap from '../utils/wrap'
 
 const each = (write: Function, opts: {}) => {
-
-  let total = []
-
+  let seenKeys = []
   return {
     data: (data) => {
       const currentKeys = keys(data)
-      const diff = difference(currentKeys, total)
+      const diff = difference(currentKeys, seenKeys)
       write(pick(diff, data))
-      total = union(total, currentKeys)
+      seenKeys = union(seenKeys, currentKeys)
     }
   }
 }
