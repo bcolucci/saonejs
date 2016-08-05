@@ -1,5 +1,4 @@
 
-import { equals } from 'ramda'
 import sizeOf from 'object-sizeof'
 import typeOf from 'typeof'
 import { now } from 'microtime'
