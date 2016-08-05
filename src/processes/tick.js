@@ -9,9 +9,9 @@ const tick = (write: Function, opts) => {
   const writeNext = () => {
     if (!buffer.length)
       return
-    const packet = head(buffer)
+    const first = head(buffer)
     buffer = tail(buffer)
-    write(head(buffer))
+    write(first)
   }
 
   const interval = setInterval(writeNext, opts.speed)
