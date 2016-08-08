@@ -1,6 +1,6 @@
 
 import sinon from 'sinon'
-import microtime from 'microtime'
+import microseconds from 'microseconds'
 import { deepEqual } from 'assert'
 import { pranalyze } from '../../src/processes'
 import createStream from '../../src/streams/stream'
@@ -9,7 +9,7 @@ describe('processes/pranalyze', () => {
 
   it('pre-analyze the elements of a stream', done => {
     const MICROSEC = 1234567891011121
-    sinon.stub(microtime, 'now', () => MICROSEC)
+    sinon.stub(microseconds, 'now', () => MICROSEC)
     const stream = createStream()
     const received = []
     pranalyze()(stream)
@@ -45,7 +45,7 @@ describe('processes/pranalyze', () => {
     ]
     arr.forEach(n => stream.write(n))
     stream.emit('end')
-    microtime.now.restore()
+    microseconds.now.restore()
   })
 
 })
