@@ -52,6 +52,16 @@
     "workflow",
     "framework"
   ],
+  "contributors": [
+    {
+      "name" : "Brice Colucci",
+      "email" : "brice.colucci@gmail.com"
+    },
+    {
+      "name" : "Steven Hall",
+      "email" : "shni44@gmail.com"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/wuha-io/saonejs/issues"
   },
