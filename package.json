@@ -11,6 +11,7 @@
     "microseconds": "^0.1.0",
     "object-sizeof": "^1.0.10",
     "ramda": "^0.21.0",
+    "shortid": "^2.2.6",
     "typeof": "^1.0.0"
   },
   "devDependencies": {
@@ -54,12 +55,12 @@
   ],
   "contributors": [
     {
-      "name" : "Brice Colucci",
-      "email" : "brice.colucci@gmail.com"
+      "name": "Brice Colucci",
+      "email": "brice.colucci@gmail.com"
     },
     {
-      "name" : "Steven Hall",
-      "email" : "shni44@gmail.com"
+      "name": "Steven Hall",
+      "email": "shni44@gmail.com"
     }
   ],
   "bugs": {
