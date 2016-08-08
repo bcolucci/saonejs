@@ -4,9 +4,10 @@ import { Stream } from 'stream'
 
 export const searchStream = (client, targetStream: Stream, streamOpts = {}): Function => {
 
-  let { size, scroll, max } = streamOpts
+  let { size, max } = streamOpts
 
   const sourceAttr = prop('_source')
+  const scroll = '60m'
 
   const write = targetStream.write.bind(targetStream)
   const onError = (err) => targetStream.emit('error', err)
@@ -22,7 +23,7 @@ export const searchStream = (client, targetStream: Stream, streamOpts = {}): Fun
 
     console.log('Events so far:', countAfter)
 
-    if (total !== countAfter && (max && max > countAfter)) {
+    if (total !== countAfter && (!max || max > countAfter)) {
       client.scroll({ scrollId: res._scroll_id, scroll: scroll })
         .then((res) => handleResponse(res, countAfter))
         .catch(onError)

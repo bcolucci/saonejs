@@ -22,6 +22,7 @@ import unique from './unique'
 import head from './head'
 import between from './between'
 import tick from './tick'
+import toArray from './toArray'
 
 export {
   buffer,
@@ -46,5 +47,6 @@ export {
   unique,
   head,
   between,
-  tick
+  tick,
+  toArray
 }
