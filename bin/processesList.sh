@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # generate the markdown processes list
-baseUrl="https://github.com/wuha-io/river/blob/master"
+baseUrl="https://github.com/wuha-io/saonejs/blob/master"
 echo "Name | Doc | Source | Test"
 echo "-----|-----|--------|-----"
 for f in $(find docs/processes -name '*.md' -type f); do
