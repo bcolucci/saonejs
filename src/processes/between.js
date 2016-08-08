@@ -23,4 +23,9 @@ const between = (write: Function, opts) => {
   }
 }
 
+/**
+ * Extract sequences based on a test function.
+ * @param {Object} opts Options
+ * @param {Function} opts.test The test function
+ */
 export default (opts = { test: Function }): Function => wrap(between, opts)

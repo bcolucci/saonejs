@@ -1,7 +1,7 @@
 
 import sizeOf from 'object-sizeof'
 import typeOf from 'typeof'
-import { now } from 'microtime'
+import { now } from 'microseconds'
 import wrap from '../utils/wrap'
 
 const { stringify } = JSON

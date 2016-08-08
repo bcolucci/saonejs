@@ -1,23 +1,26 @@
 
+import { prop } from 'ramda'
 import { Stream } from 'stream'
 
 export const searchStream = (client, targetStream: Stream, streamOpts = {}): Function => {
 
   let { size, scroll } = streamOpts
 
-  //TODO extract
-  const onError = (err) => {
-    console.error(err, err.stack);
-  }
+  const sourceAttr = prop('_source')
+
+  const write = targetStream.write.bind(targetStream)
+  const onError = (err) => targetStream.emit('error', err)
 
   const handleResponse = (res, countBefore) => {
+
     let total = res.hits.total
     let countAfter = countBefore + res.hits.hits.length
 
+    res.hits.hits
+      .map(sourceAttr)
+      .forEach(write)
 
-    res.hits.hits.forEach(hit => targetStream.write(hit._source))
-
-    console.log('Events so far:', countAfter)
+    //console.log('Events so far:', countAfter)
 
     if (total !== countAfter)
       client.scroll({ scrollId: res._scroll_id, scroll: scroll })
@@ -32,3 +35,4 @@ export const searchStream = (client, targetStream: Stream, streamOpts = {}): Fun
     return targetStream
   }
 }
+
