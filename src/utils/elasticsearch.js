@@ -6,7 +6,9 @@ export const searchStream = (client, targetStream: Stream, streamOpts = {}): Fun
   let { size, scroll } = streamOpts
 
   //TODO extract
-  const onError = console.error.bind(console)
+  const onError = (err) => {
+    console.error(err, err.stack);
+  }
 
   const handleResponse = (res, countBefore) => {
     let total = res.hits.total

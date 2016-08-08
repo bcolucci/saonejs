@@ -9,9 +9,12 @@ const between = (write: Function, opts) => {
     data: (data) => {
 
       if(opts.test(data)) {
-        if(buffer.length)
+        if(buffer.length) {
           write(buffer)
-        return buffer = [data]
+        }
+          
+        buffer = [data]
+        return
       }
 
       if (buffer.length)
