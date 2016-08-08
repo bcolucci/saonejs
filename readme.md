@@ -12,15 +12,18 @@ This is not another stream library but something to help you to work with stream
 
 [Generated documentation](https://github.com/wuha-io/saonejs/blob/master/docs/)
 
+## Usage
+
+    import { P, flow } from 'saonejs'
+
+    //TODO
+
 ## Test it
 
     git clone https://github.com/wuha-io/saonejs.git \
       && cd saonejs \
       && npm install \
       && npm test
-
-    # run an example
-    ./bnode examples/users.js
 
 ## Processes
 
