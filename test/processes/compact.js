@@ -6,20 +6,21 @@ import createStream from '../../src/streams/stream'
 
 describe('processes/compact', () => {
 
-  // TODO fix the process
-  it('...............................', done => {
-    done()
-    /*const stream = createStream()
+  //TODO the description
+  it('*****************************************', done => {
+    const stream = createStream()
     const received = []
-    compact({ test: equals, compact: last })(stream)
+    compact({ test: (cur, prev, buffer) => !prev || equals(cur, prev), compact: last })(stream)
       .on('data', received.push.bind(received))
       .on('end', () => {
-        deepEqual(received, 'abcdefg'.split(''))
+        //console.log('received', received.join(''))
+        //TODO the assertion
+          //deepEqual(received, 'abcddeffg'.split(''))
         done()
       })
-    'aabcdddeffg'.split('')
+    'aabcddddddeffg'.split('')
       .forEach(n => stream.write(n))
-    stream.emit('end')*/
+    stream.emit('end')
   })
 
 })
