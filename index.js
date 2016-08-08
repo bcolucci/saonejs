@@ -1,9 +1,10 @@
 'use strict'
 
-var processes = require('./src/processes');
-var flow = require('./src/flow').default;
-var sources = {
-  es: require('./src/streams/sources/elasticsearch').default
-};
+const processes = require('./src/processes')
+const flow = require('./src/flow').default
 
-module.exports = Object.assign({}, { P: processes }, { flow }, { sources });
+const sources = {
+  es: require('./src/streams/sources/elasticsearch').default
+}
+
+module.exports = Object.assign({}, { P: processes }, { flow }, { sources })
