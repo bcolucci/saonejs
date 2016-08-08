@@ -6,7 +6,7 @@ import createStream from '../stream'
 export default (
   clientOpts,
   searchOpts = { index, type, body: { query: { match_all: {} } } },
-  streamOpts = { size: 10000, scroll: '60m' }) => {
+  streamOpts = { size: 10000, scroll: '60m', max: null }) => {
 
   const stream = createStream()
   const client = new Client(clientOpts)
