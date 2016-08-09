@@ -1,2 +1,2 @@
 #!/bin/sh
-rm -rf lib && node_modules/.bin/babel src -d lib
+rm -rf dist && node_modules/.bin/babel src -d dist

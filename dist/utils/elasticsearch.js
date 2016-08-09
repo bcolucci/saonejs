@@ -3,44 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.searchStream = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _wrap = require('../utils/wrap');
+var _ramda = require('ramda');
 
-var _wrap2 = _interopRequireDefault(_wrap);
+var _stream = require('stream');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var between = function between(write, opts) {
-  if (!(typeof write === 'function')) {
-    throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
-  }
-
-  var buffer = [];
-
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
-    }
-  };
-};
-
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
-exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+var searchStream = exports.searchStream = function searchStream(client, targetStream) {
+  var streamOpts = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +22,41 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  if (!(targetStream instanceof _stream.Stream)) {
+    throw new TypeError('Value of argument "targetStream" violates contract.\n\nExpected:\nStream\n\nGot:\n' + _inspect(targetStream));
+  }
+
+  var size = streamOpts.size;
+  var scroll = streamOpts.scroll;
+
+
+  var sourceAttr = (0, _ramda.prop)('_source');
+
+  var write = targetStream.write.bind(targetStream);
+  var onError = function onError(err) {
+    return targetStream.emit('error', err);
+  };
+
+  var handleResponse = function handleResponse(res, countBefore) {
+
+    var total = res.hits.total;
+    var countAfter = countBefore + res.hits.hits.length;
+
+    res.hits.hits.map(sourceAttr).forEach(write);
+
+    //console.log('Events so far:', countAfter)
+
+    if (total !== countAfter) client.scroll({ scrollId: res._scroll_id, scroll: scroll }).then(function (res) {
+      return handleResponse(res, countAfter);
+    }).catch(onError);
+  };
+
+  return _ref(function (searchOpts) {
+    client.search(Object.assign({ size: size }, searchOpts, { scroll: scroll })).then(function (res) {
+      return handleResponse(res, 0);
+    }).catch(onError);
+    return targetStream;
+  });
 };
 
 function _inspect(input, depth) {

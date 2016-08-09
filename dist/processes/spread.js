@@ -6,41 +6,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _wrap = require('../utils/wrap');
+var _stream = require('../streams/stream');
 
-var _wrap2 = _interopRequireDefault(_wrap);
+var _stream2 = _interopRequireDefault(_stream);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
-  if (!(typeof write === 'function')) {
-    throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
-  }
-
-  var buffer = [];
-
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
-    }
-  };
-};
-
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? { filters: filters } : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +25,20 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  var keys = Object.keys(opts.map);
+  var createKeyStream = function createKeyStream(streams, key) {
+    return Object.assign(streams, _defineProperty({}, key, (0, _stream2.default)()));
+  };
+  var streams = keys.reduce(createKeyStream, {});
+  return _ref(function (stream) {
+    stream.on('data', function (data) {
+      var streamName = keys.find(function (key) {
+        return opts.map[key](data);
+      });
+      streams[streamName].push(data);
+    });
+    return streams;
+  });
 };
 
 function _inspect(input, depth) {

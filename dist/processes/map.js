@@ -12,35 +12,20 @@ var _wrap2 = _interopRequireDefault(_wrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
+var map = function map(write, opts) {
   if (!(typeof write === 'function')) {
     throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
   }
 
-  var buffer = [];
-
   return {
     data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
+      return write(opts.transform(_data));
     }
   };
 };
 
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? { transform: Function } : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +35,7 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  return _ref((0, _wrap2.default)(map, opts));
 };
 
 function _inspect(input, depth) {

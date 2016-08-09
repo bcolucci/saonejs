@@ -6,41 +6,36 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+var _ramda = require('ramda');
+
 var _wrap = require('../utils/wrap');
 
 var _wrap2 = _interopRequireDefault(_wrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
+var each = function each(write, opts) {
   if (!(typeof write === 'function')) {
     throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
   }
 
-  var buffer = [];
+  if (!(opts != null && (typeof opts === 'undefined' ? 'undefined' : _typeof(opts)) === 'object')) {
+    throw new TypeError('Value of argument "opts" violates contract.\n\nExpected:\n{}\n\nGot:\n' + _inspect(opts));
+  }
 
+  var seenKeys = [];
   return {
     data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
+      var currentKeys = (0, _ramda.keys)(_data);
+      var diff = (0, _ramda.difference)(currentKeys, seenKeys);
+      write((0, _ramda.pick)(diff, _data));
+      seenKeys = (0, _ramda.union)(seenKeys, currentKeys);
     }
   };
 };
 
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +45,7 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  return _ref((0, _wrap2.default)(each, opts));
 };
 
 function _inspect(input, depth) {
@@ -98,9 +93,9 @@ function _inspect(input, depth) {
       return 'Array';
     }
   } else {
-    var keys = Object.keys(input);
+    var _keys = Object.keys(input);
 
-    if (!keys.length) {
+    if (!_keys.length) {
       if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
         return input.constructor.name;
       } else {
@@ -110,11 +105,12 @@ function _inspect(input, depth) {
 
     if (depth > maxDepth) return '{...}';
     var indent = '  '.repeat(depth - 1);
-    var entries = keys.slice(0, maxKeys).map(function (key) {
+
+    var entries = _keys.slice(0, maxKeys).map(function (key) {
       return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
     }).join('\n  ' + indent);
 
-    if (keys.length >= maxKeys) {
+    if (_keys.length >= maxKeys) {
       entries += '\n  ' + indent + '...';
     }
 

@@ -3,54 +3,58 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.streamGenerator = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _wrap = require('../utils/wrap');
+var _stream = require('stream');
 
-var _wrap2 = _interopRequireDefault(_wrap);
+var _generators = require('./generators');
+
+var _stream2 = require('../streams/stream');
+
+var _stream3 = _interopRequireDefault(_stream2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
-  if (!(typeof write === 'function')) {
-    throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
-  }
-
-  var buffer = [];
-
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
-    }
-  };
-};
-
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
-exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+var streamGenerator = exports.streamGenerator = function streamGenerator(generator) {
+  var opts = arguments.length <= 1 || arguments[1] === undefined ? {
+    autostart: Boolean = true,
+    nextTick: Function = process.nextTick
+  } : arguments[1];
 
   function _ref(_id) {
-    if (!(typeof _id === 'function')) {
-      throw new TypeError('Function return value violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(_id));
+    if (!(_id instanceof _stream.Transform)) {
+      throw new TypeError('Function return value violates contract.\n\nExpected:\nTransform\n\nGot:\n' + _inspect(_id));
     }
 
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  if (!(typeof generator === 'function')) {
+    throw new TypeError('Value of argument "generator" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(generator));
+  }
+
+  var stream = (0, _stream3.default)();
+
+  stream.start = function () {
+    var _this = this;
+
+    var iterator = generator();
+    var flush = function flush() {
+      var cursor = iterator.next();
+      if (cursor.done) return _this.emit('end');
+      _this.emit('data', cursor.value);
+    };
+    var ctx = setInterval(flush, 0);
+    this.on('end', function () {
+      return clearInterval(ctx);
+    });
+  };
+
+  if (opts.autostart) stream.start();
+
+  return _ref(stream);
 };
 
 function _inspect(input, depth) {

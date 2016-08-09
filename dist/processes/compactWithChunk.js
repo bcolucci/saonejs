@@ -6,41 +6,52 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+var _ramda = require('ramda');
+
 var _wrap = require('../utils/wrap');
 
 var _wrap2 = _interopRequireDefault(_wrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
+var compact = function compact(write, opts) {
   if (!(typeof write === 'function')) {
     throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
   }
 
+  var equals = opts.equals;
+  var chunkSize = opts.chunkSize;
+
   var buffer = [];
+  var compactChunk = function compactChunk() {
+    var next = function next(arr) {
+      var compacted = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
 
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
+      if (!Array.isArray(arr)) {
+        throw new TypeError('Value of argument "arr" violates contract.\n\nExpected:\nArray\n\nGot:\n' + _inspect(arr));
       }
 
-      if (buffer.length) buffer = buffer.concat(_data);
+      if (!Array.isArray(compacted)) {
+        throw new TypeError('Value of argument "compacted" violates contract.\n\nExpected:\nArray\n\nGot:\n' + _inspect(compacted));
+      }
+
+      if (!arr.length) return compacted;
+      var x = (0, _ramda.head)(arr);
+      if (!equals(x, (0, _ramda.last)(compacted))) compacted.push(x);
+      return next((0, _ramda.tail)(arr), compacted);
+    };
+    return next(buffer.splice(0, buffer.length));
+  };
+  return {
+    data: function data(_data) {
+      buffer.push(_data);
+      if (buffer.length === chunkSize) write(compactChunk());
     }
   };
 };
 
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? { equals: Function, chunkSize: Number = 10 } : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +61,7 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  return _ref((0, _wrap2.default)(compact, opts));
 };
 
 function _inspect(input, depth) {

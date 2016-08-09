@@ -6,41 +6,18 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _wrap = require('../utils/wrap');
+var _stream = require('../streams/stream');
 
-var _wrap2 = _interopRequireDefault(_wrap);
+var _stream2 = _interopRequireDefault(_stream);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
-  if (!(typeof write === 'function')) {
-    throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
-  }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-  var buffer = [];
-
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
-    }
-  };
-};
-
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
+//TODO instead of a field, we should have a Function
+// because what if I want to categorize strings?
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? { field: field } : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +27,42 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  var targetStream = (0, _stream2.default)();
+
+  var streams = {};
+
+  var route = function route(data) {
+
+    var fieldValue = data[opts.field];
+
+    var existingStream = streams[fieldValue];
+    if (!existingStream) {
+
+      existingStream = (0, _stream2.default)();
+      existingStream.category = fieldValue;
+
+      streams = Object.assign({}, streams, _defineProperty({}, fieldValue, existingStream));
+
+      targetStream.write(streams);
+    }
+
+    existingStream.write(data);
+  };
+
+  return _ref(function (stream) {
+
+    targetStream.on('end', function () {
+      return Object.keys(streams).forEach(function (category) {
+        return streams[category].emit('end');
+      });
+    });
+
+    stream.on('data', route).on('end', function () {
+      return targetStream.emit('end');
+    });
+
+    return targetStream;
+  });
 };
 
 function _inspect(input, depth) {

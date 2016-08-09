@@ -6,41 +6,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _wrap = require('../utils/wrap');
+var _ramda = require('ramda');
 
-var _wrap2 = _interopRequireDefault(_wrap);
+var _stream = require('stream');
+
+var _stream2 = require('../streams/stream');
+
+var _stream3 = _interopRequireDefault(_stream2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
-  if (!(typeof write === 'function')) {
-    throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
-  }
-
-  var buffer = [];
-
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
-    }
-  };
-};
-
 /**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
+ * Pipe a stream into a transform stream
+ * @param {Function} transformer The transform function we can apply on each stream element
+ * @returns {Stream} The piped stream
  */
-
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var transformer = arguments.length <= 0 || arguments[0] === undefined ? _ramda.identity : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +32,25 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  if (!(typeof transformer === 'function')) {
+    throw new TypeError('Value of argument "transformer" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(transformer));
+  }
+
+  return _ref(function (source) {
+    function _ref2(_id2) {
+      if (!(_id2 instanceof _stream.Stream)) {
+        throw new TypeError('Function return value violates contract.\n\nExpected:\nStream\n\nGot:\n' + _inspect(_id2));
+      }
+
+      return _id2;
+    }
+
+    if (!(source instanceof _stream.Stream)) {
+      throw new TypeError('Value of argument "source" violates contract.\n\nExpected:\nStream\n\nGot:\n' + _inspect(source));
+    }
+
+    return _ref2(source.pipe((0, _stream3.default)(transformer)));
+  });
 };
 
 function _inspect(input, depth) {

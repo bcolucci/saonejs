@@ -12,32 +12,44 @@ var _wrap2 = _interopRequireDefault(_wrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
+var TOTAL_TRIGGER = Number.MAX_SAFE_INTEGER - 1;
+
+var frequency = function frequency(write, opts) {
   if (!(typeof write === 'function')) {
     throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
   }
 
-  var buffer = [];
+  var total = void 0,
+      views = void 0,
+      freq = void 0;
+
+  var compute = function compute() {
+    return views / (total || 1);
+  };
+  var reset = function reset() {
+    return total = views = 0;
+  };
+
+  reset();
 
   return {
     data: function data(_data) {
 
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
+      total++;
+      if (opts.test(_data)) views++;
 
-      if (buffer.length) buffer = buffer.concat(_data);
+      if (freq === undefined) freq = compute();
+
+      var curFreq = compute();
+      if (total < TOTAL_TRIGGER) return write(curFreq);
+
+      freq = (freq + curFreq) / 2;
+      reset();
+
+      write(freq);
     }
   };
 };
-
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
 
 exports.default = function () {
   var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
@@ -50,7 +62,7 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  return _ref((0, _wrap2.default)(frequency, opts));
 };
 
 function _inspect(input, depth) {

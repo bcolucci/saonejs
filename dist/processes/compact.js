@@ -6,13 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+var _ramda = require('ramda');
+
 var _wrap = require('../utils/wrap');
 
 var _wrap2 = _interopRequireDefault(_wrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
+var compact = function compact(write, opts) {
   if (!(typeof write === 'function')) {
     throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
   }
@@ -22,25 +24,20 @@ var between = function between(write, opts) {
   return {
     data: function data(_data) {
 
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
+      if (opts.test(_data, (0, _ramda.last)(buffer), buffer)) return buffer = buffer.concat(_data);
+
+      if (buffer.length) {
+        write(buffer.length === 1 ? (0, _ramda.last)(buffer) : opts.compact(buffer));
+        buffer = [];
       }
 
-      if (buffer.length) buffer = buffer.concat(_data);
+      write(_data);
     }
   };
 };
 
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: _ramda.F, compact: _ramda.last } : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +47,7 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  return _ref((0, _wrap2.default)(compact, opts));
 };
 
 function _inspect(input, depth) {

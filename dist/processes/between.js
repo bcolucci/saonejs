@@ -36,7 +36,6 @@ var between = function between(write, opts) {
  * Extract sequences based on a test function.
  * @param {Object} opts Options
  * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
  */
 
 exports.default = function () {

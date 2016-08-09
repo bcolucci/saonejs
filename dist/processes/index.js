@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.tick = exports.between = exports.head = exports.unique = exports.values = exports.sum = exports.spread = exports.round = exports.reduce = exports.pranalyze = exports.map = exports.log = exports.keys = exports.frequency = exports.flatten = exports.filter = exports.each = exports.dropRepeats = exports.count = exports.complement = exports.compactWithChunk = exports.compact = exports.categorize = exports.cast = exports.buffer = undefined;
+exports.tick = exports.between = exports.head = exports.unique = exports.values = exports.spread = exports.round = exports.pranalyze = exports.map = exports.log = exports.keys = exports.frequency = exports.flatten = exports.filter = exports.each = exports.dropRepeats = exports.count = exports.complement = exports.compactWithChunk = exports.compact = exports.categorize = exports.cast = exports.buffer = undefined;
 
 var _buffer = require('./buffer');
 
@@ -69,10 +69,6 @@ var _pranalyze = require('./pranalyze');
 
 var _pranalyze2 = _interopRequireDefault(_pranalyze);
 
-var _reduce = require('./reduce');
-
-var _reduce2 = _interopRequireDefault(_reduce);
-
 var _round = require('./round');
 
 var _round2 = _interopRequireDefault(_round);
@@ -80,10 +76,6 @@ var _round2 = _interopRequireDefault(_round);
 var _spread = require('./spread');
 
 var _spread2 = _interopRequireDefault(_spread);
-
-var _sum = require('./sum');
-
-var _sum2 = _interopRequireDefault(_sum);
 
 var _values = require('./values');
 
@@ -123,10 +115,8 @@ exports.keys = _keys2.default;
 exports.log = _log2.default;
 exports.map = _map2.default;
 exports.pranalyze = _pranalyze2.default;
-exports.reduce = _reduce2.default;
 exports.round = _round2.default;
 exports.spread = _spread2.default;
-exports.sum = _sum2.default;
 exports.values = _values2.default;
 exports.unique = _unique2.default;
 exports.head = _head2.default;

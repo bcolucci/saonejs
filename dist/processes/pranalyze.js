@@ -6,41 +6,41 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+var _objectSizeof = require('object-sizeof');
+
+var _objectSizeof2 = _interopRequireDefault(_objectSizeof);
+
+var _typeof2 = require('typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _microseconds = require('microseconds');
+
 var _wrap = require('../utils/wrap');
 
 var _wrap2 = _interopRequireDefault(_wrap);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var between = function between(write, opts) {
+var stringify = JSON.stringify;
+
+
+var pranalyze = function pranalyze(write, opts) {
   if (!(typeof write === 'function')) {
     throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
   }
 
-  var buffer = [];
-
   return {
     data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
+      var size = (0, _objectSizeof2.default)(_data);
+      var type = (0, _typeof3.default)(_data);
+      write({ size: size, type: type, microtime: (0, _microseconds.now)(), data: stringify(_data) });
     }
   };
 };
 
-/**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
- */
-
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   function _ref(_id) {
     if (!(typeof _id === 'function')) {
@@ -50,7 +50,7 @@ exports.default = function () {
     return _id;
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  return _ref((0, _wrap2.default)(pranalyze, opts));
 };
 
 function _inspect(input, depth) {

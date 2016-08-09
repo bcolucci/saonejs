@@ -15,8 +15,10 @@ import keys from './keys'
 import log from './log'
 import map from './map'
 import pranalyze from './pranalyze'
+import reduce from './reduce'
 import round from './round'
 import spread from './spread'
+import sum from './sum'
 import values from './values'
 import unique from './unique'
 import head from './head'
@@ -40,8 +42,10 @@ export {
   log,
   map,
   pranalyze,
+  reduce,
   round,
   spread,
+  sum,
   values,
   unique,
   head,

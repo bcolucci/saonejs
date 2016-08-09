@@ -6,51 +6,41 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _wrap = require('../utils/wrap');
+var _ramda = require('ramda');
 
-var _wrap2 = _interopRequireDefault(_wrap);
+var _stream = require('stream');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var between = function between(write, opts) {
-  if (!(typeof write === 'function')) {
-    throw new TypeError('Value of argument "write" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(write));
-  }
-
-  var buffer = [];
-
-  return {
-    data: function data(_data) {
-
-      if (opts.test(_data)) {
-        if (buffer.length) write(buffer);
-        return buffer = [_data];
-      }
-
-      if (buffer.length) buffer = buffer.concat(_data);
-    }
-  };
-};
+var _shortid = require('shortid');
 
 /**
- * Extract sequences based on a test function.
- * @param {Object} opts Options
- * @param {Function} opts.test The test function
- * @returns {Function} The between fonction to call on a stream
+ * Default onStream error function
+ */
+var defOnError = console.error.bind(console);
+
+/**
+ * Creates a Readable/Writable stream
+ * @param {Function} transformer
+ * @param {Function} onError = defOnError
  */
 
 exports.default = function () {
-  var opts = arguments.length <= 0 || arguments[0] === undefined ? { test: Function } : arguments[0];
+  var transformer = arguments.length <= 0 || arguments[0] === undefined ? _ramda.identity : arguments[0];
+  var onError = arguments.length <= 1 || arguments[1] === undefined ? defOnError : arguments[1];
 
-  function _ref(_id) {
-    if (!(typeof _id === 'function')) {
-      throw new TypeError('Function return value violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(_id));
-    }
-
-    return _id;
+  if (!(typeof transformer === 'function')) {
+    throw new TypeError('Value of argument "transformer" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(transformer));
   }
 
-  return _ref((0, _wrap2.default)(between, opts));
+  var stream = new _stream.Transform({ objectMode: true });
+  // ex: BkfZWpEMUY36d3bef66acbe, rytWWaVG8Fca3919d95b10e...
+  stream.id = (0, _shortid.generate)() + Math.random().toString(16).slice(2);
+  stream._read = function () {};
+  stream._write = function (chunk, _, callback) {
+    stream.emit('data', transformer(chunk));
+    callback();
+  };
+  stream.on('error', onError);
+  return stream;
 };
 
 function _inspect(input, depth) {
