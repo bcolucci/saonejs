@@ -1,4 +1,4 @@
-# inMemoryStream
+# inMemoryArray
 
 TODO We probably don't need this, we could use a generator
 
