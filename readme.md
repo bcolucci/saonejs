@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/wuha-io/saonejs.svg?branch=master)](https://travis-ci.org/wuha-io/saonejs)
 
-**In active development**, feel free to contribute.
+**In active development**, help is welcome!
 
 ## Purpose
 

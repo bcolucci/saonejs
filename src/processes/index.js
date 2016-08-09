@@ -15,7 +15,7 @@ import frequency from './frequency'
 import keys from './keys'
 import log from './log'
 import map from './map'
-import max from './max'
+import { min, max } from './minmax'
 import pranalyze from './pranalyze'
 import reduce from './reduce'
 import round from './round'
@@ -29,11 +29,33 @@ import tick from './tick'
 import toArray from './toArray'
 
 export {
-  average, buffer, cast, categorize,
-  compact, compactWithChunk, complement, count,
-  dropRepeats, each, filter, flatten,
-  frequency, keys, log, map,
-  max, pranalyze, reduce, round,
-  spread, sum, values, unique,
-  head, between, tick, toArray
+  average,
+  buffer,
+  cast,
+  categorize,
+  compact,
+  compactWithChunk,
+  complement,
+  count,
+  dropRepeats,
+  each,
+  filter,
+  flatten,
+  frequency,
+  keys,
+  log,
+  map,
+  min,
+  max,
+  pranalyze,
+  reduce,
+  round,
+  spread,
+  sum,
+  values,
+  unique,
+  head,
+  between,
+  tick,
+  toArray
 }

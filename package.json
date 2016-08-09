@@ -1,6 +1,6 @@
 {
   "name": "saonejs",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A Stream Workflow Framework",
   "main": "dist/index.js",
   "author": "Wuha <contact@wuha.io>",
@@ -41,7 +41,7 @@
     "flow": "sh bin/flow.sh",
     "test": "sh bin/test.sh",
     "build": "sh bin/build.sh",
-    "doc": "sh bin/docs.sh",
+    "docs": "sh bin/docs.sh",
     "package": "sh bin/package.sh",
     "watch": "sh bin/watch.sh",
     "prepublish": "npm run build"

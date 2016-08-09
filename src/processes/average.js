@@ -1,5 +1,5 @@
 
-import { T, cond, equals } from 'ramda'
+import { T, always, cond, equals } from 'ramda'
 import wrap from '../utils/wrap'
 
 const standard = (write) => {
@@ -30,8 +30,8 @@ const stdDeviation = (write) => {
 }
 
 const average = (write: Function, opts) => cond([
-  [ equals('std_deviation'), () => stdDeviation ],
-  [ T, () => standard ]
+  [ equals('std_deviation'), always(stdDeviation) ],
+  [ T, always(standard) ]
 ])(opts.mode)(write)
 
 export default (opts = { mode: String }): Function => wrap(average, opts)
