@@ -24,11 +24,3 @@ This is not another stream library but something to help you to work with stream
       && cd saonejs \
       && npm install \
       && npm test
-
-## Roadmap
-
-  - Implement all the tests
-  - Make documentation
-  - Implement sources (Elasticsearch, File, JSON, SQLite...)
-  - Implement some endpoints
-  - Make a string grammar we can compile to JavaScript with River

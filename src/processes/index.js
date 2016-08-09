@@ -14,6 +14,7 @@ import frequency from './frequency'
 import keys from './keys'
 import log from './log'
 import map from './map'
+import max from './max'
 import pranalyze from './pranalyze'
 import reduce from './reduce'
 import round from './round'
@@ -42,6 +43,7 @@ export {
   keys,
   log,
   map,
+  max,
   pranalyze,
   reduce,
   round,
