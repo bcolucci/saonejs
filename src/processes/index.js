@@ -1,4 +1,5 @@
 
+import average from './average'
 import buffer from './buffer'
 import cast from './cast'
 import categorize from './categorize'
@@ -28,31 +29,11 @@ import tick from './tick'
 import toArray from './toArray'
 
 export {
-  buffer,
-  cast,
-  categorize,
-  compact,
-  compactWithChunk,
-  complement,
-  count,
-  dropRepeats,
-  each,
-  filter,
-  flatten,
-  frequency,
-  keys,
-  log,
-  map,
-  max,
-  pranalyze,
-  reduce,
-  round,
-  spread,
-  sum,
-  values,
-  unique,
-  head,
-  between,
-  tick,
-  toArray
+  average, buffer, cast, categorize,
+  compact, compactWithChunk, complement, count,
+  dropRepeats, each, filter, flatten,
+  frequency, keys, log, map,
+  max, pranalyze, reduce, round,
+  spread, sum, values, unique,
+  head, between, tick, toArray
 }

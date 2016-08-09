@@ -4,14 +4,8 @@ import wrap from '../utils/wrap'
 const toArray = (write: Function, opts) => {
   let buffer = []
   return {
-    data: (data) => {
-      buffer = buffer.concat(data)
-    },
-    
-    end: () => {
-      write(buffer)
-      buffer = []
-    }
+    data: (data) => buffer = buffer.concat(data),
+    end: () => write(buffer)
   }
 }
 
