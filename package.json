@@ -42,7 +42,8 @@
     "build": "sh bin/build.sh",
     "doc": "sh bin/doc.sh",
     "package": "sh bin/package.sh",
-    "watch": "sh bin/watch.sh"
+    "watch": "sh bin/watch.sh",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
