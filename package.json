@@ -1,6 +1,6 @@
 {
   "name": "saonejs",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A Stream Workflow Framework",
   "main": "lib/index.js",
   "author": "Wuha <contact@wuha.io>",
