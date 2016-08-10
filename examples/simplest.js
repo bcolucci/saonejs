@@ -5,8 +5,8 @@ const generator = utils.generators.boundedByIterations(50)(utils.generators.math
 const { stream, listen } = sources.generator(generator)
 
 // log the random number, and log the current current total numbers
-flow(P.log(), P.count(), P.log())(stream)
+const flowStream = flow(P.log(), P.count(), P.log())(stream)
 
-stream.on('end', () => console.log('End of the stream'))
+stream.on('end', () => console.log('End of the stream', flowStream.path))
 
 listen()
