@@ -1,31 +1,24 @@
 
 import createStream from '../streams/stream'
 
-const WRITTABLE_EVENTS = [ 'close', 'drain', 'error', 'finish', 'pipe', 'unpipe' ]
-const READABLE_EVENTS = [ 'close', 'data', 'end', 'error', 'readable' ]
-const EVENTS = [].concat(WRITTABLE_EVENTS, READABLE_EVENTS)
+const events = [ 'close', 'data', 'drain', 'end', 'error', 'finish', 'pipe', 'readable', 'unpipe' ]
 
-const updatePath = (source, target) => {
-  let path
-  if (!source.path)
-    path = [ source.id ]
-  else {
-    path = source.path.slice()
-    delete source.path // for memory sake
-  }
-  target.path = path.concat(target.id)
-}
-
-export default (process: Function, opts = {}): Function => {
+export default (process: Function, opts = { customName: String }): Function => {
   return (stream) => {
 
-    const targetStream = createStream()
+    const targetStream = createStream({ 
+      processName: process.name,
+      path: stream.path,
+      customName: opts.customName
+    })
+
+    // for memory sake
+    delete stream.path
+
     const initializedProcess = process(targetStream.push.bind(targetStream), opts)
 
-    updatePath(stream, targetStream)
-
     Object.keys(initializedProcess)
-      .filter((n) => EVENTS.includes(n))
+      .filter((n) => events.includes(n))
       .forEach((n) => stream.on(n, initializedProcess[n]))
 
     stream.on('end', () => targetStream.emit('end'))

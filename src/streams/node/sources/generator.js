@@ -1,9 +1,12 @@
 
 import createStream from '../stream'
 
-export default (generator: Function) => {
+export default (opts = { generator: Function, customName: String }) => {
 
-  const stream = createStream()
+  const { generator, customName } = opts
+
+  const stream = createStream({ processName: 'generator', customName })
+
   const iterator = generator()
 
   let tx

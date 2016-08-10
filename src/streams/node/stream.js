@@ -3,25 +3,36 @@ import { identity } from 'ramda'
 import { Transform } from 'stream'
 import { generate as newId } from 'shortid'
 
-/**
- * Default onStream error function
- */
-const defOnError = console.error.bind(console)
+const createStream = (opts = {
+  processName: null,
+  customName: null,
+  path: [],
+  transform: identity
+}): Transform => {
 
-/**
- * Creates a Readable/Writable stream
- * @param {Function} transformer
- * @param {Function} onError = defOnError
- */
-export default (transformer: Function = identity, onError = defOnError): Transform => {
+  const { processName, customName, path, transform } = opts
+
   const stream = new Transform({ objectMode: true })
-  // ex: BkfZWpEMUY36d3bef66acbe, rytWWaVG8Fca3919d95b10e...
-  stream.id = newId() + Math.random().toString(16).slice(2)
+
+  stream.id = newId() + Date.now().toString(16)
+
+  stream.path = [].concat(path).concat({
+    id: stream.id,
+    processName,
+    customName,
+    createdAt: Date.now()
+  })
+
   stream._read = () => {}
+
   stream._write = (chunk, _, callback) => {
-    stream.emit('data', transformer(chunk))
+    stream.emit('data', transform(chunk))
     callback()
   }
-  stream.on('error', onError)
+
+  stream.on('error', console.error.bind(console))
+
   return stream
 }
+
+export default createStream
