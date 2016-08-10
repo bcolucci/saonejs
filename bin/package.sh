@@ -4,4 +4,4 @@ rm -rf lib \
   && npm run flow \
   && npm run test \
   && npm run docs \
-  && node_modules/.bin/babel src -d lib
+  && node_modules/.bin/babel src -d dist
