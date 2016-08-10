@@ -20,10 +20,10 @@ describe('processes/toArray', () => {
     stream.emit('end')
   })
 
-  it('returns the array of stream elements at the end of the stream (with a chunckSize)', done => {
+  it('returns the array of stream elements at the end of the stream (with a chunkSize)', done => {
     const stream = createStream()
     const received = []
-    toArray({ chunckSize: 10 })(stream)
+    toArray({ chunkSize: 10 })(stream)
       .on('data', received.push.bind(received))
       .on('end', () => {
         deepEqual(received, [
