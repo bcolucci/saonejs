@@ -5,7 +5,7 @@ export default (opts = { generator: Function, customName: String }) => {
 
   const { generator, customName } = opts
 
-  const stream = createStream({ processName: 'generator', customName })
+  const stream = createStream({ processName: 'generatorSource', customName })
 
   const iterator = generator()
 

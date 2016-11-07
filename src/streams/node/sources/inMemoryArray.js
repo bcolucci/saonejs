@@ -7,7 +7,7 @@ import createStream from '../stream'
  */
 export default (items: Array) => {
 
-  const stream = createStream({ processName: 'inMemoryArray' })
+  const stream = createStream({ processName: 'inMemoryArraySource' })
 
   const listen = (opts = { timeout: 10 }) => {
 
