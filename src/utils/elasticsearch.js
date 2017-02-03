@@ -5,12 +5,18 @@ import { Stream } from 'stream'
 export const searchStream = (client, targetStream: Stream, streamOpts = {}): Function => {
 
   let { size, max } = streamOpts
+  let currentRequest = null
+  let closing = false
 
   const sourceAttr = prop('_source')
   const scroll = '60m'
 
   const write = targetStream.write.bind(targetStream)
-  const onError = (err) => targetStream.emit('error', err)
+  const onError = (err) => {
+    if(!closing) {
+      targetStream.emit('error', err)
+    }
+  }
 
   const handleResponse = (res, countBefore) => {
 
@@ -25,8 +31,8 @@ export const searchStream = (client, targetStream: Stream, streamOpts = {}): Fun
 
     if (total !== countAfter && (!max || max > countAfter)) {
       client.scroll({ scrollId: res._scroll_id, scroll: scroll })
-        .then((res) => handleResponse(res, countAfter))
-        .catch(onError)
+      .then((res) => handleResponse(res, countAfter))
+      .catch(onError)
     } else {
       targetStream.end()
     }
@@ -34,9 +40,17 @@ export const searchStream = (client, targetStream: Stream, streamOpts = {}): Fun
 
   return (searchOpts) => {
     client.search(Object.assign({ size }, searchOpts, { scroll }))
-      .then((res) => handleResponse(res, 0))
-      .catch(onError)
-    return targetStream
+    .then((res) => handleResponse(res, 0))
+    .catch(onError)
+
+    return {
+      close: () => {
+        console.log('Closing ElasticSearch connection')
+        closing = true
+        client.close()
+        targetStream.end()
+      }
+    }
   }
 }
 

@@ -23,6 +23,7 @@ import head from './head'
 import between from './between'
 import tick from './tick'
 import toArray from './toArray'
+import first from './first'
 
 export {
   buffer,
@@ -48,5 +49,6 @@ export {
   head,
   between,
   tick,
-  toArray
+  toArray,
+  first
 }
