@@ -4,21 +4,25 @@ import wrap from '../utils/wrap'
 const between = (write: Function, opts) => {
 
   let buffer = []
+  let start = null
 
   return {
     data: (data) => {
+      const test = opts.test(data, start)
 
-      if(opts.test(data)) {
+      if(test) {
+        start = data
+
         if(buffer.length) {
           write(buffer)
         }
-          
-        buffer = [data]
-        return
-      }
 
-      if (buffer.length)
-        buffer = buffer.concat(data)
+        buffer = [data]
+      } else {
+        if(start) {
+          buffer = buffer.concat(data)
+        }
+      }
     }
   }
 }
